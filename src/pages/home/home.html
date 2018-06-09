@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      e-Road
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="addMarker()"><ion-icon name="add"></ion-icon>Add Marker</button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <div #map id="map"></div>
+
+ <ion-list> 
+ 
+ <ion-item>
+   <ion-label floating>Enter a title</ion-label>
+   <ion-input type="text" name="title" [(ngModel)]="data.title"></ion-input>
+ </ion-item>
+ <ion-item>
+   <ion-label floating>Enter a description</ion-label>
+   <ion-textarea type="text" name="desc" [(ngModel)]="data.desc"></ion-textarea>
+ </ion-item> 
+ 
+
+  <button ion-button block (click)="submit()">Submit to server</button>
+  </ion-list>
+
+  <ion-card>
+    <ion-card-header>
+      Response
+    </ion-card-header>
+      <ion-card-content>
+	<b>{{data.response}}</b>
+      </ion-card-content>
+    </ion-card>
+</ion-content>
