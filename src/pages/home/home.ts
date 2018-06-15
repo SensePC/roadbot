@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { LocationTracker } from '../../providers/location-tracker';
+import { LocationTracker } from '../../providers/location-tracker/location-tracker';
 
 @Component({
   selector: 'page-home',
@@ -20,3 +20,5 @@ export class HomePage {
   stop() {
     this.locationTracker.stopTracking();
   }
+
+}
