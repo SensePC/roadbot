@@ -2,21 +2,20 @@ import { Injectable, NgZone } from '@angular/core';
 import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 import 'rxjs/add/operator/filter';
-
-
+ 
 @Injectable()
 export class LocationTracker {
-
-  public watch: any;
+ 
+  public watch: any;   
   public lat: number = 0;
   public lng: number = 0;
-
+ 
   constructor(public zone: NgZone) {
-  
+ 
   }
 
   startTracking() {
-    
+ 
     // Background Tracking
  
     let config = {
@@ -56,26 +55,23 @@ export class LocationTracker {
  
     this.watch = this.geolocation.watchPosition(options).filter((p: any) => p.code === undefined).subscribe((position: Geoposition) => {
  
-      console.log(position);
+    console.log(position);
  
-      // Run update inside of Angular's zone
-      this.zone.run(() => {
-        this.lat = position.coords.latitude;
-        this.lng = position.coords.longitude;
-      });
+    // Run update inside of Angular's zone
+    this.zone.run(() => {
+      this.lat = position.coords.latitude;
+      this.lng = position.coords.longitude;
+    });
  
-    });  
-
-
+  });
+ 
   }
 
   stopTracking() {
-
+  
     console.log('stopTracking');
  
     this.backgroundGeolocation.finish();
     this.watch.unsubscribe();
-
+ 
   }
-
-}
