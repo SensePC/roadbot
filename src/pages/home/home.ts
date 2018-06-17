@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { LocationTracker } from '../../providers/location-tracker/location-tracker';
+import { LocationTracker } from '../../providers/location-tracker';
  
 @Component({
   selector: 'page-home',
