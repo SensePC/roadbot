@@ -1,36 +1,22 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { ErrorHandler, NgModule } from '@angular/core';
-import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
-import { SplashScreen } from '@ionic-native/splash-screen';
+import { Component } from '@angular/core';
+import { Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
- 
-import { MyApp } from './app.component';
+import { SplashScreen } from '@ionic-native/splash-screen';
+
 import { HomePage } from '../pages/home/home';
-import { LocationTracker } from '../providers/location-tracker';
-import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
-import { Geolocation } from '@ionic-native/geolocation';
- 
-@NgModule({
-  declarations: [
-    MyApp,
-    HomePage
-  ],
-  imports: [
-    BrowserModule,
-    IonicModule.forRoot(MyApp)
-  ],
-  bootstrap: [IonicApp],
-  entryComponents: [
-    MyApp,
-    HomePage
-  ],
-  providers: [
-    LocationTracker,
-    BackgroundGeolocation,
-    Geolocation,
-    StatusBar,
-    SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
-  ]
+@Component({
+  templateUrl: 'app.html'
 })
-export class AppModule {}
+export class MyApp {
+  rootPage:any = HomePage;
+
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
+    platform.ready().then(() => {
+      // Okay, so the platform is ready and our plugins are available.
+      // Here you can do any higher level native things you might need.
+      statusBar.styleDefault();
+      splashScreen.hide();
+    });
+  }
+}
+

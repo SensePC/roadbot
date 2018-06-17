@@ -1,5 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
-import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
+import { BackgroundGeolocation, BackgroundGeolocationConfig } from '@ionic-native/background-geolocation';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 import 'rxjs/add/operator/filter';
 
@@ -11,7 +11,10 @@ export class LocationTracker {
   public lat: number = 0;
   public lng: number = 0;
 
-  constructor(public zone: NgZone) {
+  constructor(public zone: NgZone,
+              public backgroundGeolocation: BackgroundGeolocation,
+	      public geolocation:Geolocation
+	     ) {
   
   }
 
@@ -19,7 +22,7 @@ export class LocationTracker {
     
     // Background Tracking
  
-    let config = {
+    let config: BackgroundGeolocationConfig = {
       desiredAccuracy: 0,
       stationaryRadius: 20,
       distanceFilter: 10,
