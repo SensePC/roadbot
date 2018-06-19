@@ -1,12 +1,21 @@
 <ion-header>
   <ion-navbar color="secondary">
     <ion-title>
-      Location Tracker
+      RoadBOT
     </ion-title>
   </ion-navbar>
 </ion-header>
  
 <ion-content>
+  <ion-card>
+    <ion-card-header>
+      Response
+    </ion-card-header>
+      <ion-card-content>
+    <b>{{locationTracker.data}}</b>
+      </ion-card-content>
+  </ion-card>
+  
   <h3>Current Latitude: {{locationTracker.lat}}</h3>
   <h3>Current Longitude: {{locationTracker.lng}}</h3>
   <button ion-button full primary (click)="start()">Start Tracking</button>
