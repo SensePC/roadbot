@@ -37,8 +37,7 @@ export class LocationTracker {
           }
        );
  }
-  startTracking() {
-    this.getData(); 
+ startTracking() {
     // Background Tracking
  
     let config: BackgroundGeolocationConfig = {
@@ -91,6 +90,8 @@ export class LocationTracker {
       var latlng = {lat: this.lat, lng: this.lng}
       var link = 'http://192.168.1.4:8000/roadbot_b/data/';
       var myData = JSON.stringify(latlng);
+
+      this.getData();
   
      /* this.http.post(link, myData)
         .subscribe(data => {

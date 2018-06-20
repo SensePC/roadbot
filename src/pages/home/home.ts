@@ -14,11 +14,11 @@ export class HomePage {
   public result: any;
   constructor(public navCtrl: NavController, public locationTracker: LocationTracker, public http: Http) {
 
- //this.http = http;
+ this.http = http;
 
   }
   /* sendData() {
-   this.http.get('http://192.168.1.4:8000/roadbot_b/data/').map(res => res.json())
+   this.http.get('https://www.reddit.com/r/gifs/new/.json?limit=10').map(res => res.json())
          .subscribe(data=> {
          this.result = data.data.children;
          console.log(this.result);
@@ -26,9 +26,10 @@ export class HomePage {
            console.log("Oops!");
           }
        );
-   } */
+       } */
  
-  start(){
+   start(){
+   //this.sendData();
     this.locationTracker.startTracking();
   }
  
