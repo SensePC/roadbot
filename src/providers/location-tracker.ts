@@ -5,6 +5,7 @@ import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import { Http } from '@angular/http';
+// import { Headers, RequestOptions } from '@angular/http';
 
 @Injectable()
 export class LocationTracker {
@@ -13,7 +14,6 @@ export class LocationTracker {
   public lat: number = 0;
   public lng: number = 0;
   public data: any = {};
-  public result: any;
 
   constructor(public zone: NgZone,
               public backgroundGeolocation: BackgroundGeolocation,
@@ -27,13 +27,21 @@ export class LocationTracker {
   }
   
   // GET data
-  getData() {
-    this.http.get('https://www.reddit.com/r/gifs/new/.json?limit=10').map(res => res.json())
+  getData(coords) {
+    /*var headers = new Headers();
+    headers.append('Access-Control-Allow-Origin' , '*');
+    headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT');
+    headers.append('Accept','application/json');
+    headers.append('content-type','application/json');
+    let options = new RequestOptions({ headers:headers,withCredentials: true}); */
+    
+    var link = 'http://192.168.1.4:8000/roadbot_b/data/';
+    this.http.get(link, coords).map(res => res.json())
          .subscribe(data=> {
-         this.result = data.data.children;
-         console.log(this.result);
+         this.data.response = data;
+         console.log(this.data.response);
        }, err => {
-           console.log("Oops!");
+           console.log(err);
           }
        );
  }
@@ -83,15 +91,14 @@ export class LocationTracker {
       this.zone.run(() => {
         this.lat = position.coords.latitude;
         this.lng = position.coords.longitude;
-        this.data = 'hello world';
+        //this.data = 'hello world';
       });
  
       // send the data
       var latlng = {lat: this.lat, lng: this.lng}
-      var link = 'http://192.168.1.4:8000/roadbot_b/data/';
       var myData = JSON.stringify(latlng);
 
-      this.getData();
+      this.getData(myData);
   
      /* this.http.post(link, myData)
         .subscribe(data => {
