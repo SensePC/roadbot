@@ -9,15 +9,24 @@
 <ion-content>
   <ion-card>
     <ion-card-header>
-      Response
+      <h3>Πληροφορίες Ατυχημάτων</h3>
     </ion-card-header>
       <ion-card-content>
-    <b>{{locationTracker.data}}</b>
       </ion-card-content>
   </ion-card>
   
-  <h3>Current Latitude: {{locationTracker.lat}}</h3>
-  <h3>Current Longitude: {{locationTracker.lng}}</h3>
+  <ion-card>
+   <ion-card-header>
+   </ion-card-header>
+    <ion-card-content>
+      <p><b>Αιτία:</b>  {{locationTracker.data}}</p>
+      <p><b>Περιοχή:</b>  {{locationTracker.data}}</p>
+      <p><b>Αριθμός Aτυχημάτων:</b> {{locationTracker.data}}</p>
+    </ion-card-content>
+  </ion-card>
+  
+  <p>Γεωγρ. Πλάτος: {{locationTracker.lat}}</p>
+  <p>Γεωγρ. Μήκος: {{locationTracker.lng}}</p>
   <button ion-button full primary (click)="start()">Start Tracking</button>
   <button ion-button full primary (click)="stop()">Stop Tracking</button>
   <!--<button ion-button full primary (click)="sendData()">test</button>-->
