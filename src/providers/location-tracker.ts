@@ -39,7 +39,7 @@ export class LocationTracker {
     this.data = {};
 
     var link = 'http://192.168.1.4:8000/roadbot_b/data/';
-    this.http.get(link, { params: coords }).map(res => res.json())
+    this.http.get(link, {params: coords}).map(res => res.json())
          .subscribe(data=> {
          this.data.response = data;
          console.log(this.data.response);
@@ -105,9 +105,9 @@ export class LocationTracker {
  
       // send the data
       var latlng = {lat: this.lat, lng: this.lng}
-      var myData = JSON.stringify(latlng);
+      // var myData = JSON.stringify(latlng);
 
-      this.getData(myData);
+      this.getData(latlng);
   
      /* this.http.post(link, myData)
         .subscribe(data => {
