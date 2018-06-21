@@ -35,11 +35,20 @@ export class LocationTracker {
     headers.append('content-type','application/json');
     let options = new RequestOptions({ headers:headers,withCredentials: true}); */
     
+    // Clean the data object
+    this.data = {};
+
     var link = 'http://192.168.1.4:8000/roadbot_b/data/';
-    this.http.get(link, coords).map(res => res.json())
+    this.http.get(link, { params: coords }).map(res => res.json())
          .subscribe(data=> {
          this.data.response = data;
          console.log(this.data.response);
+         
+         // Run update inside of Angular's zone
+         this.zone.run(() => {
+           this.data = this.data.response;
+         });
+     
        }, err => {
            console.log(err);
           }
