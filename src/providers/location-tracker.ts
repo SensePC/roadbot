@@ -29,14 +29,9 @@ export class LocationTracker {
   
       this.http = http;
  
-      /* this.data.info = '';
-      this.data.cause = '';
-      this.data.str_addr = '';
-      this.data.accid_num = '';
-      */
    }
 
-  // GET data
+  // Retrive accidents' data from the mobile_backend database
   getData(coords) {
     /*var headers = new Headers();
     headers.append('Access-Control-Allow-Origin' , '*');
@@ -45,20 +40,18 @@ export class LocationTracker {
     headers.append('content-type','application/json');
     let options = new RequestOptions({ headers:headers,withCredentials: true}); */
     
-    // Clean the data object
-    //this.data = {};
-
     var link = 'http://192.168.1.4:8000/roadbot_b/data/';
     // We use .map function in order to be able to use json response
     // as a single array (data)
     this.http.get(link, {params: coords}).map(res => res.json())
          .subscribe(data=> {
+         // assign card's variables to the responded array
          this.info = data[0];
          this.cause = data[1];
          this.str_addr = data[2];
          this.data.accid_num = data[3];
          console.log(this.cause);
-         // Run update inside of Angular's zone
+         // Run update inside of Angular's zone in order to display on the screen
          this.zone.run(() => {
            this.info = data[0];
            this.cause = data[1];
@@ -91,7 +84,6 @@ export class LocationTracker {
       this.zone.run(() => {
         this.lat = location.latitude;
         this.lng = location.longitude;
-        //this.data = this.data.response;
       });
  
     }, (err) => {
@@ -118,23 +110,13 @@ export class LocationTracker {
       this.zone.run(() => {
         this.lat = position.coords.latitude;
         this.lng = position.coords.longitude;
-        //this.data = 'hello world';
       });
  
       // send the data
       var latlng = {lat: this.lat, lng: this.lng}
-      // var myData = JSON.stringify(latlng);
 
       this.getData(latlng);
   
-     /* this.http.post(link, myData)
-        .subscribe(data => {
-          this.data.response = data["_body"];
-         // console.log(this.data.response);
-        }, error => {
-         console.log("Oooops!");
-      });*/
-   
     });  
 
 
