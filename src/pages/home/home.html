@@ -9,7 +9,8 @@
 <ion-content>
   <ion-card>
     <ion-card-header>
-      <h3>Πληροφορίες Ατυχημάτων</h3>
+      <h3><b>Πληροφορίες Ατυχημάτων</b></h3>
+      <p>Κατάσταση: <b>{{locationTracker.info}}</b></p>
     </ion-card-header>
       <ion-card-content>
       </ion-card-content>
@@ -19,9 +20,9 @@
    <ion-card-header>
    </ion-card-header>
     <ion-card-content>
-      <p><b>Αιτία:</b>  {{locationTracker.data}}</p>
-      <p><b>Περιοχή:</b>  {{locationTracker.data}}</p>
-      <p><b>Αριθμός Aτυχημάτων:</b> {{locationTracker.data}}</p>
+      <p><b>Αιτία:</b>  {{locationTracker.cause}}</p>
+      <p><b>Περιοχή:</b>  {{locationTracker.str_addr}}</p>
+      <p><b>Αριθμός Aτυχημάτων:</b> {{locationTracker.accid_num}}</p>
     </ion-card-content>
   </ion-card>
   

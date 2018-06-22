@@ -15,17 +15,27 @@ export class LocationTracker {
   public lng: number = 0;
   public data: any = {};
 
+  // Define ionic card's variables
+  public info: string = '';
+  public cause: string = '';
+  public str_addr: string = '';
+  public accid_num: number = 0;
+
   constructor(public zone: NgZone,
               public backgroundGeolocation: BackgroundGeolocation,
 	      public geolocation:Geolocation,
               public http: Http
 	     ) {
-     
-      this.data.response = '';
+  
       this.http = http;
-  
-  }
-  
+ 
+      /* this.data.info = '';
+      this.data.cause = '';
+      this.data.str_addr = '';
+      this.data.accid_num = '';
+      */
+   }
+
   // GET data
   getData(coords) {
     /*var headers = new Headers();
@@ -36,17 +46,25 @@ export class LocationTracker {
     let options = new RequestOptions({ headers:headers,withCredentials: true}); */
     
     // Clean the data object
-    this.data = {};
+    //this.data = {};
 
     var link = 'http://192.168.1.4:8000/roadbot_b/data/';
+    // We use .map function in order to be able to use json response
+    // as a single array (data)
     this.http.get(link, {params: coords}).map(res => res.json())
          .subscribe(data=> {
-         this.data.response = data;
-         console.log(this.data.response);
-         
+         this.info = data[0];
+         this.cause = data[1];
+         this.str_addr = data[2];
+         this.data.accid_num = data[3];
+         console.log(this.cause);
          // Run update inside of Angular's zone
          this.zone.run(() => {
-           this.data = this.data.response;
+           this.info = data[0];
+           this.cause = data[1];
+           this.str_addr = data[2];
+           this.accid_num = data[3];
+         
          });
      
        }, err => {
