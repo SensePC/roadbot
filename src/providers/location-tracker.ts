@@ -40,7 +40,7 @@ export class LocationTracker {
     headers.append('content-type','application/json');
     let options = new RequestOptions({ headers:headers,withCredentials: true}); */
     
-    var link = 'http://192.168.1.4:8000/roadbot_b/data/';
+    var link = 'http://147.27.31.219:81/roadbot_b/data/';
     // We use .map function in order to be able to use json response
     // as a single array (data)
     this.http.get(link, {params: coords}).map(res => res.json())
