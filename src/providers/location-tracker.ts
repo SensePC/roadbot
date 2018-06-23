@@ -79,7 +79,7 @@ export class LocationTracker {
     
     // We use .map function in order to be able to use json response
     // as a single array (data)
-    this.http.get(link, {params: {"lat": 25.13, "lng": 35.33}}).map(res => res.json())
+    this.http.get(link, {params: coords}).map(res => res.json())
          .subscribe(data=> {
          // assign card's variables to the responded array
          this.info = data[0];
@@ -107,9 +107,9 @@ export class LocationTracker {
              this.safe_executed = 1;
              }
          if (this.info == 'You are safe' && this.safe_executed == 1) {
-             this.playSafeText(this.info, this.cause, this.str_addr)
+             this.playSafeText()
              this.safe_executed = 0;
-             this.alert_execuded = 1;
+             this.alert_executed = 1;
          }
        }, err => {
            console.log(err);
