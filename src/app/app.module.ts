@@ -10,6 +10,7 @@ import { LocationTracker } from '../providers/location-tracker';
 import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
 import { Geolocation } from '@ionic-native/geolocation';
 import { HttpModule} from '@angular/http';
+import { TextToSpeech } from '@ionic-native/text-to-speech';
 
  
 @NgModule({
@@ -33,6 +34,7 @@ import { HttpModule} from '@angular/http';
     Geolocation,
     StatusBar,
     SplashScreen,
+    TextToSpeech,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

@@ -6,6 +6,8 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import { Http } from '@angular/http';
 // import { Headers, RequestOptions } from '@angular/http';
+import {TextToSpeech} from '@ionic-native/text-to-speech';
+
 
 @Injectable()
 export class LocationTracker {
@@ -14,6 +16,10 @@ export class LocationTracker {
   public lat: number = 0;
   public lng: number = 0;
   public data: any = {};
+  
+  // text to speech var
+  public text: string;
+  public executed: number;
 
   // Define ionic card's variables
   public info: string = '';
@@ -24,12 +30,40 @@ export class LocationTracker {
   constructor(public zone: NgZone,
               public backgroundGeolocation: BackgroundGeolocation,
 	      public geolocation:Geolocation,
+              private tts: TextToSpeech,
               public http: Http
 	     ) {
   
       this.http = http;
  
+      // setting tts var
+      this.text = 'Initial text';
+      this.executed = 0;
+ 
    }
+ 
+  // Function to play responded text (database results)
+  playText(info, cause, str_addr) {
+
+      if (info == 'Alert') {
+          this.text = 'Alert. Many car accidents have been happened in ' + str_addr + ' area because of ' + cause;
+          console.log(this.text);
+          this.tts.speak({
+          text: this.text
+          })
+            .then(() => console.log('Success'))
+            .catch((reason: any) => console.log(reason));
+          } else {
+              this.text = 'You are driving in a safe area'
+              console.log(this.text);
+              this.tts.speak({
+                text: this.text
+              })
+                .then(() => console.log('Success'))
+                .catch((reason: any) => console.log(reason));
+             }
+     }
+         
 
   // Retrive accidents' data from the mobile_backend database
   getData(coords) {
@@ -39,8 +73,8 @@ export class LocationTracker {
     headers.append('Accept','application/json');
     headers.append('content-type','application/json');
     let options = new RequestOptions({ headers:headers,withCredentials: true}); */
-    
     var link = 'http://147.27.31.219:81/roadbot_b/data/';
+    
     // We use .map function in order to be able to use json response
     // as a single array (data)
     this.http.get(link, {params: coords}).map(res => res.json())
@@ -59,7 +93,11 @@ export class LocationTracker {
            this.accid_num = data[3];
          
          });
-     
+         // playText function call
+         if (this.executed != 1) {
+           this.playText(this.info, this.cause, this.str_addr)
+         }
+         this.executed = 1;   
        }, err => {
            console.log(err);
           }
