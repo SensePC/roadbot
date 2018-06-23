@@ -19,7 +19,8 @@ export class LocationTracker {
   
   // text to speech var
   public text: string;
-  public executed: number;
+  public alert_executed: number;
+  public safe_executed: number;
 
   // Define ionic card's variables
   public info: string = '';
@@ -38,31 +39,32 @@ export class LocationTracker {
  
       // setting tts var
       this.text = 'Initial text';
-      this.executed = 0;
+      this.alert_executed = 1;
+      this.safe_executed = 1;
  
    }
  
-  // Function to play responded text (database results)
-  playText(info, cause, str_addr) {
+  // Function to play Alert responded text (database results)
+  playAlertText(info, cause, str_addr) {
+      this.text = 'Alert. Many car accidents have been happened in ' + str_addr + ' area because of ' + cause;
+      console.log(this.text);
+      this.tts.speak({
+      text: this.text
+      })
+        .then(() => console.log('Success'))
+        .catch((reason: any) => console.log(reason));
+      }
 
-      if (info == 'Alert') {
-          this.text = 'Alert. Many car accidents have been happened in ' + str_addr + ' area because of ' + cause;
-          console.log(this.text);
-          this.tts.speak({
-          text: this.text
-          })
-            .then(() => console.log('Success'))
-            .catch((reason: any) => console.log(reason));
-          } else {
-              this.text = 'You are driving in a safe area'
-              console.log(this.text);
-              this.tts.speak({
-                text: this.text
-              })
-                .then(() => console.log('Success'))
-                .catch((reason: any) => console.log(reason));
-             }
-     }
+   // Function to play Safe responded text (database results)
+   playSafeText() {
+       this.text = 'You are driving in a safe area'
+       console.log(this.text);
+       this.tts.speak({
+           text: this.text
+        })
+        .then(() => console.log('Success'))
+        .catch((reason: any) => console.log(reason));
+      }
          
 
   // Retrive accidents' data from the mobile_backend database
@@ -77,7 +79,7 @@ export class LocationTracker {
     
     // We use .map function in order to be able to use json response
     // as a single array (data)
-    this.http.get(link, {params: coords}).map(res => res.json())
+    this.http.get(link, {params: {"lat": 25.13, "lng": 35.33}}).map(res => res.json())
          .subscribe(data=> {
          // assign card's variables to the responded array
          this.info = data[0];
@@ -93,11 +95,22 @@ export class LocationTracker {
            this.accid_num = data[3];
          
          });
-         // playText function call
-         if (this.executed != 1) {
-           this.playText(this.info, this.cause, this.str_addr)
+         // playText calls functionality
+         if (this.info == 'Alert' && this.alert_executed == 1) {
+             this.playAlertText(this.info, this.cause, this.str_addr)
+             // convert alert_executed to 0 in order to not playAlertText
+             // function be able to executed more than once
+             this.alert_executed = 0;
+             // convert safe_executed to 1 in order to be able
+             // the playSafeText function to be executed after the driver
+             // comes out from the danger zone
+             this.safe_executed = 1;
+             }
+         if (this.info == 'You are safe' && this.safe_executed == 1) {
+             this.playSafeText(this.info, this.cause, this.str_addr)
+             this.safe_executed = 0;
+             this.alert_execuded = 1;
          }
-         this.executed = 1;   
        }, err => {
            console.log(err);
           }
