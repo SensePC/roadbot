@@ -46,7 +46,7 @@ export class LocationTracker {
  
   // Function to play Alert responded text (database results)
   playAlertText(info, cause, str_addr) {
-      this.text = 'Alert. Many car accidents have been happened in ' + str_addr + ' area because of ' + cause;
+      this.text = 'Alert. Many car accidents have happened in ' + str_addr + ' area because of ' + cause;
       console.log(this.text);
       this.tts.speak({
       text: this.text
