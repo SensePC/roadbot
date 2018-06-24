@@ -13,6 +13,7 @@ import {TextToSpeech} from '@ionic-native/text-to-speech';
 export class LocationTracker {
 
   public watch: any;
+  public pull: any;
   public lat: number = 0;
   public lng: number = 0;
   public data: any = {};
@@ -79,7 +80,7 @@ export class LocationTracker {
     
     // We use .map function in order to be able to use json response
     // as a single array (data)
-    this.http.get(link, {params: coords}).map(res => res.json())
+    this.pull = this.http.get(link, {params: coords}).map(res => res.json())
          .subscribe(data=> {
          // assign card's variables to the responded array
          this.info = data[0];
@@ -176,7 +177,8 @@ export class LocationTracker {
   stopTracking() {
 
     console.log('stopTracking');
- 
+   
+    this.pull.unsubscribe();
     this.backgroundGeolocation.finish();
     this.watch.unsubscribe();
 

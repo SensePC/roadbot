@@ -7,6 +7,9 @@
 </ion-header>
  
 <ion-content>
+  <button ion-button full color="light">
+   {{ locationTracker.info }}
+  </button>
   <ion-card>
     <ion-card-header>
       <h3><b>Πληροφορίες Ατυχημάτων</b></h3>
@@ -25,10 +28,17 @@
       <p><b>Αριθμός Aτυχημάτων:</b> {{locationTracker.accid_num}}</p>
     </ion-card-content>
   </ion-card>
-  
-  <p>Γεωγρ. Πλάτος: {{locationTracker.lat}}</p>
-  <p>Γεωγρ. Μήκος: {{locationTracker.lng}}</p>
-  <button ion-button full primary (click)="start()">Start Tracking</button>
-  <button ion-button full primary (click)="stop()">Stop Tracking</button>
-  <!--<button ion-button full primary (click)="sendData()">test</button>-->
+ 
+  <ion-card> 
+    <ion-card-content>
+      <p>Γεωγρ. Πλάτος: {{locationTracker.lat}}</p>
+      <p>Γεωγρ. Μήκος: {{locationTracker.lng}}</p>
+    </ion-card-content>
+  </ion-card>
+  <ion-footer>
+     <div text-center>
+        <button ion-button round color="twitter" (click)="start()">Start Tracking</button>
+        <button ion-button round color="twitter"(click)="stop()">Stop Tracking</button>
+    </div>
+  </ion-footer>
 </ion-content>
