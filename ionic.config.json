@@ -1,5 +1,7 @@
 {
   "name": "roadbot",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
