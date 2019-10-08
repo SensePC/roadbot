@@ -26,6 +26,11 @@ export class AppComponent {
       title: 'Form',
       url: '/form',
       icon: 'form'
+    },
+    {
+      title: 'About',
+      url: '/about',
+      icon: 'info'
     }
   ];
 
