@@ -1,9 +1,32 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>about</ion-title>
-  </ion-toolbar>
-</ion-header>
 
-<ion-content>
-
-</ion-content>
+    <ion-navbar>
+      <ion-title>About</ion-title>
+      <ion-buttons left>
+          <button ion-button icon-only (click)="pop()">
+              <ion-icon name="arrow-back"></ion-icon>
+          </button>
+      </ion-buttons>
+    </ion-navbar>
+  
+  </ion-header>
+  
+  <ion-content class="bg-style" padding>
+  
+    <ion-card>
+      <img src="./images/perifereia_kritis.jpg">
+      <ion-card-header>
+          <ion-card-title>e-Road</ion-card-title>
+      </ion-card-header>  
+  
+      <ion-card-content>
+      To e-Road είναι μια εφαρμογή η οποία φιλοδοξεί να συμβάλει στη βελτίωση
+      του οδικού δικτύου της Κρήτης.
+      </ion-card-content>
+      <ion-card-content>
+      Η εφαρμογή είναι μέρος του έργου Crete - GIS το οποίο αναπτύσσεται 
+      από την Περιφέρεια Κρήτης σε συνεργασία με το Πολυτεχνείο Κρήτης
+      </ion-card-content>
+  </ion-card>
+      
+  </ion-content>

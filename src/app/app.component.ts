@@ -23,14 +23,14 @@ export class AppComponent {
       icon: 'map'
     },
     {
-      title: 'Form',
-      url: '/form',
-      icon: 'form'
+      title: 'Add an event',
+      url: '/event',
+      icon: 'ios-add-circle-outline'
     },
     {
       title: 'About',
       url: '/about',
-      icon: 'info'
+      icon: 'ios-information-circle-outline'
     }
   ];
 
