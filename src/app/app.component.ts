@@ -18,9 +18,9 @@ export class AppComponent {
       icon: 'home'
     },
     {
-      title: 'Map',
-      url: '/map',
-      icon: 'map'
+      title: 'Alert',
+      url: '/alert',
+      icon: 'car'
     },
     {
       title: 'Add an event',
