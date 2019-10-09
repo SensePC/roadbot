@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+// import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-info',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InfoPage implements OnInit {
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
   }
+
+  /*
+  // pop() function runs when the user tap the back button
+  pop(){
+  this.navCtrl.navigateRoot('/home');
+  }
+  */
 
 }

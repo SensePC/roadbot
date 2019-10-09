@@ -24,7 +24,7 @@ export class AppComponent {
     },
     {
       title: 'Add an event',
-      url: '/event',
+      url: '/form',
       icon: 'ios-add-circle-outline'
     },
     {
