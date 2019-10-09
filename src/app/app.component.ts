@@ -28,9 +28,14 @@ export class AppComponent {
       icon: 'ios-add-circle-outline'
     },
     {
-      title: 'About',
+      title: 'About EOValue',
       url: '/about',
       icon: 'ios-information-circle-outline'
+    },
+    {
+      title: 'About RoadBot',
+      url: '/info',
+      icon: 'ios-information-circle'
     }
   ];
 

@@ -7,6 +7,7 @@ const routes: Routes = [
   { path: 'map', loadChildren: './map/map.module#MapPageModule' },
   { path: 'form', loadChildren: './form/form.module#FormPageModule' },
   { path: 'about', loadChildren: './about/about.module#AboutPageModule' },
+  { path: 'info', loadChildren: './info/info.module#InfoPageModule' },
 ];
 
 @NgModule({
