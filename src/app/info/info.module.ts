@@ -23,4 +23,8 @@ const routes: Routes = [
   ],
   declarations: [InfoPage]
 })
-export class InfoPageModule {}
+export class InfoPageModule {
+ 
+
+
+}

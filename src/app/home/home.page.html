@@ -15,34 +15,9 @@
 
 </ion-header>
 
-<ion-content padding>
+<ion-content>
 
-    <ion-row>
-        <ion-col>
-          <ion-card no-margin margin-bottom>
-            <ion-card-content>
-              <p>RoadBot...</p>
-            </ion-card-content>
-          </ion-card>
-        </ion-col>
-      </ion-row>
-
-  <div *ngIf="geoLatitude">
-    <p>Latitude : {{geoLatitude}}</p>
-    <p>Longitude : {{geoLongitude}}</p>
-    <p>Accuracy : {{geoAccuracy}}</p>
-    <p class="address-text">
-
-      <span class="watch-text" *ngIf="isWatching; else notWatching">
-        Watching Location
-      </span>
-      <ng-template #notWatching>
-        Location Watch Stopped
-      </ng-template>
-
-      <br>Address : {{geoAddress }}
-    </p>
-  </div>
+    <div id="map" style="width:100%; height:100%;"></div>
 
 </ion-content>
 
