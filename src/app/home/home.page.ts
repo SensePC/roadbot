@@ -1,4 +1,8 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Geolocation, Geoposition } from '@ionic-native/geolocation/ngx';
+import { AlertController } from '@ionic/angular';
+import { MenuController } from '@ionic/angular';
 import leaflet from 'leaflet';
 
 @Component({
@@ -11,14 +15,85 @@ export class HomePage {
   // Get 'map' from DOM
   @ViewChild('map', {static: true}) mapContainer: ElementRef;
   map: any;
+  
+  data:any = {};
 
-  constructor()
+  constructor(private geolocation: Geolocation, 
+              public http: HttpClient,
+              public alertCtrl: AlertController,
+              private menu: MenuController)
  {
+
+  this.data.title = '';
+  this.data.desc = '';
+  this.data.response = '';
+  this.http = http;
     
+  }
+
+  openMenu() {
+    this.menu.open();
+  }
+
+  closeMenu() {
+    this.menu.close();
+  }
+
+  toggleMenu() {
+    this.menu.toggle();
   }
 
   ionViewDidEnter() {
     this.loadmap();
+  }
+
+  async presentPrompt() {
+    let alert = await this.alertCtrl.create({
+      header: 'Add an event',
+      inputs: [
+        {
+          name: 'title',
+          placeholder: 'Title'
+        },
+        {
+          name: 'desc',
+          placeholder: 'Description',
+        }
+      ],
+      buttons: [
+        {
+          text: 'Submit',
+          handler: data => {
+            this.geolocation.getCurrentPosition().then((position) => {
+              let lat = position.coords.latitude;
+              let lon = position.coords.longitude;
+              let latLng = {lat: lat, lon:lon}
+          
+              var title = data.title;
+              var desc = data.desc;
+              var desc_loc = {lat: lat, lon: lon, title: title, desc: desc}
+              var link = 'http://192.168.1.5:8000/results/';
+              var myData = JSON.stringify(desc_loc);
+       
+       
+          this.http.post(link, myData)
+            .subscribe(data => {
+            this.data.response = data["_body"]; 
+            }, error => {
+            console.log("Oooops!");
+          });
+        });
+       } 
+      }, {
+        text: 'Cancel',
+        role: 'cancel',
+        handler: data => {
+          console.log('Cancel clicked');
+        }
+      }
+     ]
+    });    
+    await alert.present();
   }
 
   loadmap() {
