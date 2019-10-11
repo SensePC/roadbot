@@ -23,11 +23,6 @@ export class AppComponent {
       icon: 'car'
     },
     {
-      title: 'Add an event',
-      url: '/form',
-      icon: 'ios-add-circle-outline'
-    },
-    {
       title: 'About EOValue',
       url: '/about',
       icon: 'ios-information-circle-outline'
