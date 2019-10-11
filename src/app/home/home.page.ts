@@ -144,22 +144,21 @@ export class HomePage {
   
   // Mapping
   loadmap() {
-    this.map = leaflet.map("map").setView(new leaflet.LatLng(35.2551600,25.028161), 7);
+    this.map = leaflet.map("map").setView(new leaflet.LatLng(35,25), 3);
     leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attributions: 'www.tphangout.com',
-      maxZoom: 18
+      maxZoom: 20
     }).addTo(this.map);
     this.map.locate({
       watch: true,
       setView: true,
-      maxZoom: 16
+      maxZoom: 18
     }).on('locationfound', (e) => {
-      let markerGroup = leaflet.featureGroup();
-      let marker: any = leaflet.marker([e.latitude, e.longitude]).on('click', () => {
-        alert('You are here !');
-      })
-      markerGroup.addLayer(marker);
-      this.map.addLayer(markerGroup);
+      // let markerGroup = leaflet.featureGroup();
+      var radius = e.accuracy / 2;
+      leaflet.marker(e.latlng).addTo(this.map);      
+      leaflet.circle(e.latlng, radius).addTo(this.map);
+
     }).on('locationerror', (err) => {
         alert(err.message);
     })
@@ -236,17 +235,30 @@ export class HomePage {
           }
        );
  }
-    
+     // UV index popup alert
+     async presentAlert(uv: any) {
+            const alert = await this.alertCtrl.create({
+              header: 'Alert',
+              subHeader: 'UV Index',
+              message: 'UV index in your location is: ' + uv ,
+              buttons: ['OK']
+            });
+        
+            await alert.present();
+          }
+  
     // OpenWeatherMap API call
     getCurrentUVIndex(latitude: number, longitude: number) {
       let result = this.http.get(this.uv_URL + this.APIkey + '&lat=' + latitude + '&lon=' + longitude)
       .subscribe(UVData=> {
-        console.log(UVData)
+        if (UVData["value"] > 5) {
+          console.log(UVData["value"]);
+          this.presentAlert(UVData["value"]);
+        }
       }, err => {
           console.log(err);
          }
       );
-
     }
 
     //Get current coordinates of device
