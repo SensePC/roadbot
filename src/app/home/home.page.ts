@@ -255,6 +255,7 @@ export class HomePage {
           console.log(UVData["value"]);
           this.presentAlert(UVData["value"]);
         }
+        this.tts.speak('The UV index in your area is' + UVData["value"]);
       }, err => {
           console.log(err);
          }
