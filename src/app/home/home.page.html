@@ -6,8 +6,12 @@
     </ion-buttons>
     
     <ion-buttons slot="end">
+
+      <ion-button (click)="stopLocationWatch()">
+          <ion-icon name="md-hand"></ion-icon>
+       </ion-button>
       <ion-button (click)="presentPrompt()">
-        <ion-icon name="md-add-circle"></ion-icon>
+         <ion-icon name="md-add-circle"></ion-icon>
       </ion-button>
     </ion-buttons>
 
@@ -24,12 +28,21 @@
 <ion-footer>
   <ion-toolbar color="primary">
   <div text-center>
-    <ion-button size="default" color="tertiary" (click)="watchLocation(options)">
-      Start tracking
-    </ion-button>
-    <ion-button size="default" color="tertiary" (click)="stopLocationWatch()">
-      Stop tracking
-    </ion-button>
+      <ion-card>
+          <ion-item>
+            <ion-icon name="pin" slot="start"></ion-icon>
+            <ion-label>Track your location</ion-label>
+            <ion-button (click)="watchLocation(options)">
+                <ion-icon name="navigate"></ion-icon>
+                Start
+            </ion-button>
+          </ion-item>
+
+          <ion-item>
+              <ion-label>{{geoLatitude}}  {{ geoLongitude}}</ion-label>
+            </ion-item>
+        
+        </ion-card>
   </div>
 </ion-toolbar>
 </ion-footer>
