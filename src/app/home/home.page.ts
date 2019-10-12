@@ -5,7 +5,7 @@ import { AlertController } from '@ionic/angular';
 import { MenuController } from '@ionic/angular';
 import { TextToSpeech } from '@ionic-native/text-to-speech/ngx';
 import { NgZone } from '@angular/core';
-import { NativeGeocoder, NativeGeocoderOptions, NativeGeocoderResult } from '@ionic-native/native-geocoder/ngx';
+// import { NativeGeocoder, NativeGeocoderOptions, NativeGeocoderResult } from '@ionic-native/native-geocoder/ngx';
 import leaflet from 'leaflet';
 
 @Component({
@@ -24,7 +24,6 @@ export class HomePage {
   geoLatitude: number;
   geoLongitude: number;
   geoAccuracy:number;
-  geoAddress: string;
 
   watchLocationUpdates:any; 
   subscription: any;
@@ -52,20 +51,12 @@ export class HomePage {
   public str_addr: string = '';
   public accid_num: number = 0;
 
-
-  //Geocoder configuration
-  geoencoderOptions: NativeGeocoderOptions = {
-    useLocale: true,
-    maxResults: 5
-  };
-
-
   constructor(public zone: NgZone,
               private geolocation: Geolocation, 
               public http: HttpClient,
               private tts: TextToSpeech,
               public alertCtrl: AlertController,
-              private nativeGeocoder: NativeGeocoder,
+              //private nativeGeocoder: NativeGeocoder,
               private menu: MenuController)
  {
 
@@ -141,9 +132,16 @@ export class HomePage {
     });    
     await alert.present();
   }
-  
+
+
   // Mapping
-  loadmap() {
+  loadmap() { 
+    // The above 4 lines solves the problem of marker-shadow not found
+    leaflet.Icon.Default.mergeOptions({
+      iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
+      iconUrl: require("leaflet/dist/images/marker-icon.png"),
+      shadowUrl: require("leaflet/dist/images/marker-shadow.png")
+    });
     this.map = leaflet.map("map").setView(new leaflet.LatLng(35,25), 3);
     leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attributions: 'www.tphangout.com',
@@ -268,52 +266,32 @@ export class HomePage {
         this.geoLatitude = resp.coords.latitude;
         this.geoLongitude = resp.coords.longitude; 
         this.geoAccuracy = resp.coords.accuracy; 
-        this.getGeoencoder(this.geoLatitude,this.geoLongitude);
+        // this.getGeoencoder(this.geoLatitude,this.geoLongitude);
        }).catch((error) => {
          alert('Error getting location'+ JSON.stringify(error));
        });
     }
   
-    //geocoder method to fetch address from coordinates passed as arguments
-    getGeoencoder(latitude,longitude){
-      this.nativeGeocoder.reverseGeocode(latitude, longitude, this.geoencoderOptions)
-      .then((result: NativeGeocoderResult[]) => {
-        this.geoAddress = this.generateAddress(result[0]);
-      })
-      .catch((error: any) => {
-        alert('Error getting location'+ JSON.stringify(error));
-      });
-    }
-  
-    //Return Comma saperated address
-    generateAddress(addressObj){
-        let obj = [];
-        let address = "";
-        for (let key in addressObj) {
-          obj.push(addressObj[key]);
-        }
-        obj.reverse();
-        for (let val in obj) {
-          if(obj[val].length)
-          address += obj[val]+', ';
-        }
-      return address.slice(0, -2);
-    }
-  
     //Start location update watch
     watchLocation(){
+
+      // Geolocation options
+      let options = {
+      frequency: 3000,
+      enableHighAccuracy: true
+      };
       this.isWatching = true;
-      this.watchLocationUpdates = this.geolocation.watchPosition();
-      this.subscription = this.watchLocationUpdates.subscribe((resp) => {
+      this.watchLocationUpdates = this.geolocation.watchPosition(options);
+      this.subscription = this.watchLocationUpdates.subscribe((resp: Geoposition) => {
         this.geoLatitude = resp.coords.latitude;
         this.geoLongitude = resp.coords.longitude; 
-        this.getGeoencoder(this.geoLatitude,this.geoLongitude);
 
        // Call OpenWeatherMap API
        this.getCurrentUVIndex(this.geoLatitude, this.geoLongitude);
+
        // send the data
        var latlng = {lat: this.geoLatitude, lng: this.geoLongitude} 
-       this.getData(latlng);
+       // this.getData(latlng);
       });
     }
   
