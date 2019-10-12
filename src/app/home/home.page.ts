@@ -260,11 +260,14 @@ export class HomePage {
     getCurrentUVIndex(latitude: number, longitude: number) {
       let result = this.http.get(this.uv_URL + this.APIkey + '&lat=' + latitude + '&lon=' + longitude)
       .subscribe(UVData=> {
+        // 8 - 10.9 is the correct very high UV index
         if (UVData["value"] > 5) {
           console.log(UVData["value"]);
           this.presentAlert(UVData["value"]);
         }
-        this.tts.speak('The UV index in your area is' + UVData["value"]);
+        this.tts.speak('The UV index in your area is '  + UVData["value"] + 
+                       '. It is a very high UV index. Take extra precautions' + 
+                      'because unprotected skin and eyes will be damaged and can burn quickly.');
       }, err => {
           console.log(err);
          }
