@@ -45,6 +45,10 @@ export class HomePage {
   APIkey = '54ace90d7266d94e1843f7577f0aaf4e';
   UVData: any = {};
 
+  // Marker and circle variable
+  theMarker = {};
+  theCircle = {};
+
   // Define ionic card's variables
   public info: string = '';
   public cause: string = '';
@@ -147,18 +151,25 @@ export class HomePage {
       attributions: 'www.tphangout.com',
       maxZoom: 20
     }).addTo(this.map);
-    this.map.locate({
+     this.map.locate({
       watch: true,
       setView: true,
       maxZoom: 18
     }).on('locationfound', (e) => {
       // let markerGroup = leaflet.featureGroup();
+
+      // Great trick to remove the old marker and add the new one !
+      if (this.theMarker != undefined && this.theCircle != undefined) {
+        this.map.removeLayer(this.theMarker);
+        this.map.removeLayer(this.theCircle);
+      }
       var radius = e.accuracy / 2;
-      leaflet.marker(e.latlng).addTo(this.map);      
-      leaflet.circle(e.latlng, radius).addTo(this.map);
+      // theMarker and theCircle variables definition
+      this.theMarker = leaflet.marker(e.latlng).addTo(this.map);      
+      this.theCircle = leaflet.circle(e.latlng, radius).addTo(this.map);
 
     }).on('locationerror', (err) => {
-        alert(err.message);
+        alert(err.message); 
     })
   }
     //this.map.setView(new leaflet.LatLng(35.2551600,25.028161), 7);
