@@ -294,8 +294,8 @@ export class HomePage {
     }
 
     // OpenWeatherMap API call for UV index
-    getCurrentWeather(latitude: number, longitude: number) {
-      let result = this.http.get(this.uv_URL + this.APIkey + '&lat=' + latitude + '&lon=' + longitude)
+    getCurrentWeather() {
+      let result = this.http.get(this.weatherURL + this.APIkey + '&lat=' + this.geoLatitude + '&lon=' + this.geoLongitude)
       .subscribe(weatherData=> {
           console.log(weatherData);
           // this.presentWeather();
