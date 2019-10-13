@@ -42,8 +42,10 @@ export class HomePage {
 
   // OpenWeatherMap variables
   uv_URL = 'http://api.openweathermap.org/data/2.5/uvi?appid=';
+  weatherURL = 'http://api.openweathermap.org/data/2.5/weather?appid=';
   APIkey = '54ace90d7266d94e1843f7577f0aaf4e';
   UVData: any = {};
+  weatherData: any = {};
 
   // Marker and circle variable
   theMarker = {};
@@ -255,8 +257,25 @@ export class HomePage {
         
             await alert.present();
           }
+
+     // Weather popup
+     async presentWeather(desc: any, temp: number, pressure: number, humidity: number, wind_speed: number, clouds: number) {
+      const alert = await this.alertCtrl.create({
+        header: 'Current Weather',
+        // subHeader: '',
+        message: 'Description: ' + desc + '\n' +
+                  'Temprature: ' + (temp - 273.15) + '\n' +
+                  'Pressure: ' + pressure + '\n' +
+                  'Humidity: ' + humidity + '\n' +
+                  'Wind speed: ' + wind_speed + '\n' +
+                  'Clouds: ' + clouds,
+        buttons: ['OK']
+      });
   
-    // OpenWeatherMap API call
+      await alert.present();
+    }
+  
+    // OpenWeatherMap API call for UV index
     getCurrentUVIndex(latitude: number, longitude: number) {
       let result = this.http.get(this.uv_URL + this.APIkey + '&lat=' + latitude + '&lon=' + longitude)
       .subscribe(UVData=> {
@@ -274,8 +293,24 @@ export class HomePage {
       );
     }
 
+    // OpenWeatherMap API call for UV index
+    getCurrentWeather(latitude: number, longitude: number) {
+      let result = this.http.get(this.uv_URL + this.APIkey + '&lat=' + latitude + '&lon=' + longitude)
+      .subscribe(weatherData=> {
+          console.log(weatherData);
+          // this.presentWeather();
+        
+        this.tts.speak('Current weather data ' + 
+                       '. It is a very high UV index. Take extra precautions' + 
+                      'because unprotected skin and eyes will be damaged and can burn quickly.');
+      }, err => {
+          console.log(err);
+         }
+      );
+    }
+
     //Get current coordinates of device
-    getGeolocation(){
+    /* getGeolocation(){
       this.geolocation.getCurrentPosition().then((resp) => {
         this.geoLatitude = resp.coords.latitude;
         this.geoLongitude = resp.coords.longitude; 
@@ -284,7 +319,7 @@ export class HomePage {
        }).catch((error) => {
          alert('Error getting location'+ JSON.stringify(error));
        });
-    }
+    } */
   
     //Start location update watch
     watchLocation(){
