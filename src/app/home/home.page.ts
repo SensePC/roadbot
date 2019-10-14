@@ -20,6 +20,8 @@ export class HomePage {
   map: any;
   
   data:any = {};
+  options1: any = {};
+  options2: any = {};
 
   geoLatitude: number;
   geoLongitude: number;
@@ -34,7 +36,7 @@ export class HomePage {
   public watch: any;
   public lat: number = 0;
   public lng: number = 0;
-  
+
   // text to speech var
   public text: string;
   public alert_executed: number;
@@ -282,42 +284,39 @@ export class HomePage {
       let result = this.http.get(this.uv_URL + this.APIkey + '&lat=' + latitude + '&lon=' + longitude)
       .subscribe(UVData=> {
         // 8 - 10.9 is the correct very high UV index
-        if (UVData["value"] > 5) {
+        if (UVData["value"] > 3) {
           console.log(UVData["value"]);
           this.presentAlert(UVData["value"]);
-        }
-        this.tts.speak('The UV index in your area is '  + UVData["value"] + 
+          this.tts.speak('The UV index in your area is '  + UVData["value"] + 
                        '. It is a very high UV index. Take extra precautions' + 
                       'because unprotected skin and eyes will be damaged and can burn quickly.');
+        }
       }, err => {
           console.log(err);
          }
       );
     }
     
-    /*
-    getCurrentWeather() {
-        console.log(this.getGeolocation());
-        let result = this.http.get(this.weatherURL + this.APIkey + '&lat=' + this.geoLatitude + '&lon=' + this.geoLongitude)
-          .subscribe(weatherData => {
-            console.log(this.weatherData["weather"]);
-            this.tts.speak('Current weather data ' + 
-                       '. It is a very high UV index. Take extra precautions' + 
-                       'because unprotected skin and eyes will be damaged and can burn quickly.');
-        }, err => {
-        console.log(err);
-       }
-      )
-    }
-    */
-
-    // OpenWeatherMap API call for current weather data
-    getCurrentWeather(){
-      this.geolocation.getCurrentPosition().then((resp) => {
+    // Get current coordinates of device
+    getGeolocation(){
+      this.options1 = {
+        timeout: 30000,
+        enableHighAccuracy: true
+        };
+      this.geolocation.getCurrentPosition(this.options1).then((resp) => {
         this.geoLatitude = resp.coords.latitude;
         this.geoLongitude = resp.coords.longitude; 
         this.geoAccuracy = resp.coords.accuracy; 
-        let result = this.http.get(this.weatherURL + this.APIkey + '&lat=' + this.geoLatitude + '&lon=' + this.geoLongitude)
+        
+        this.getCurrentWeather(this.geoLatitude, this.geoLongitude);
+       }).catch((error) => {
+         alert('Error getting location'+ JSON.stringify(error));
+       });
+    }
+
+    // OpenWeatherMap API call for current weather data
+    getCurrentWeather(latitude: number, longitude: number){
+        let result = this.http.get(this.weatherURL + this.APIkey + '&lat=' + latitude + '&lon=' + longitude)
           .subscribe(weatherData => {
             // console.log(weatherData["weather"]["0"]["description"]);
             let description = weatherData["weather"]["0"]["description"];
@@ -338,21 +337,17 @@ export class HomePage {
         console.log(err);
        }
       )
-        // this.getGeoencoder(this.geoLatitude,this.geoLongitude);
-       }).catch((error) => {
-         alert('Error getting location'+ JSON.stringify(error));
-       });
     }
   
     //Start location update watch
     watchLocation(){
       // Geolocation options
-      let options = {
+      this.options2 = {
       frequency: 3000,
       enableHighAccuracy: true
       };
       this.isWatching = true;
-      this.watchLocationUpdates = this.geolocation.watchPosition(options);
+      this.watchLocationUpdates = this.geolocation.watchPosition(this.options2);
       this.subscription = this.watchLocationUpdates.subscribe((resp: Geoposition) => {
         this.geoLatitude = resp.coords.latitude;
         this.geoLongitude = resp.coords.longitude; 

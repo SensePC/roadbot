@@ -10,7 +10,7 @@
       <ion-button (click)="stopLocationWatch()">
           <ion-icon name="md-hand"></ion-icon>
        </ion-button>
-      <ion-button (click)="getCurrentWeather()">
+      <ion-button (click)="getGeolocation()">
         <ion-icon name="md-cloudy-night"></ion-icon>
       </ion-button>
       <ion-button (click)="presentPrompt()">
@@ -35,7 +35,7 @@
           <ion-item>
             <ion-icon name="pin" slot="start"></ion-icon>
             <ion-label>Track your location</ion-label>
-            <ion-button (click)="watchLocation(options)">
+            <ion-button (click)="watchLocation()">
                 <ion-icon name="navigate"></ion-icon>
                 Start
             </ion-button>
