@@ -260,11 +260,13 @@ export class HomePage {
 
      // Weather popup
      async presentWeather(desc: any, temp: number, pressure: number, humidity: number, wind_speed: number, clouds: number) {
+      let Ctemp = Math.floor(Number(temp) - 273.15);
+
       const alert = await this.alertCtrl.create({
         header: 'Current Weather',
         // subHeader: '',
         message: 'Description: ' + desc + '\n' +
-                  'Temprature: ' + (temp - 273.15) + '\n' +
+                  'Temprature: ' + Ctemp + '\n' +
                   'Pressure: ' + pressure + '\n' +
                   'Humidity: ' + humidity + '\n' +
                   'Wind speed: ' + wind_speed + '\n' +
@@ -292,38 +294,54 @@ export class HomePage {
          }
       );
     }
-
-    // OpenWeatherMap API call for UV index
+    
+    /*
     getCurrentWeather() {
-      let result = this.http.get(this.weatherURL + this.APIkey + '&lat=' + this.geoLatitude + '&lon=' + this.geoLongitude)
-      .subscribe(weatherData=> {
-          console.log(weatherData);
-          // this.presentWeather();
-        
-        this.tts.speak('Current weather data ' + 
+        console.log(this.getGeolocation());
+        let result = this.http.get(this.weatherURL + this.APIkey + '&lat=' + this.geoLatitude + '&lon=' + this.geoLongitude)
+          .subscribe(weatherData => {
+            console.log(this.weatherData["weather"]);
+            this.tts.speak('Current weather data ' + 
                        '. It is a very high UV index. Take extra precautions' + 
-                      'because unprotected skin and eyes will be damaged and can burn quickly.');
-      }, err => {
-          console.log(err);
-         }
-      );
+                       'because unprotected skin and eyes will be damaged and can burn quickly.');
+        }, err => {
+        console.log(err);
+       }
+      )
     }
+    */
 
-    //Get current coordinates of device
-    /* getGeolocation(){
+    // OpenWeatherMap API call for current weather data
+    getCurrentWeather(){
       this.geolocation.getCurrentPosition().then((resp) => {
         this.geoLatitude = resp.coords.latitude;
         this.geoLongitude = resp.coords.longitude; 
         this.geoAccuracy = resp.coords.accuracy; 
+        let result = this.http.get(this.weatherURL + this.APIkey + '&lat=' + this.geoLatitude + '&lon=' + this.geoLongitude)
+          .subscribe(weatherData => {
+            // console.log(weatherData["weather"]["0"]["description"]);
+            let description = weatherData["weather"]["0"]["description"];
+            let temperature = weatherData["main"]["temp"];
+            let pressure = weatherData["main"]["pressure"];
+            let humidity = weatherData["main"]["humidity"];
+            let wind_speed = weatherData["wind"]["speed"];
+            let clouds = weatherData["clouds"]["all"];
+            this.presentWeather(description, temperature, pressure, humidity, wind_speed, clouds);
+            this.tts.speak('Current weather data ' + 
+                       '. It is a very high UV index. Take extra precautions' + 
+                       'because unprotected skin and eyes will be damaged and can burn quickly.');
+        }, err => {
+        console.log(err);
+       }
+      )
         // this.getGeoencoder(this.geoLatitude,this.geoLongitude);
        }).catch((error) => {
          alert('Error getting location'+ JSON.stringify(error));
        });
-    } */
+    }
   
     //Start location update watch
     watchLocation(){
-
       // Geolocation options
       let options = {
       frequency: 3000,
