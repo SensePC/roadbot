@@ -18,11 +18,6 @@ export class AppComponent {
       icon: 'home'
     },
     {
-      title: 'Alert',
-      url: '/alert',
-      icon: 'car'
-    },
-    {
       title: 'About EOValue',
       url: '/about',
       icon: 'ios-information-circle-outline'
