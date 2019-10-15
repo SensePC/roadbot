@@ -156,6 +156,7 @@ export class HomePage {
     this.map = leaflet.map("map").setView(new leaflet.LatLng(35,25), 3);
     leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attributions: 'www.tphangout.com',
+      crs: leaflet.CRS.EPSG4326,
       maxZoom: 20
     }).addTo(this.map);
     this.camsLayers = {
@@ -165,7 +166,6 @@ export class HomePage {
             format: 'image/png',
             version: '1.3.0',
             crs: leaflet.CRS.EPSG4326,
-            transparent: true,
             //styles: 'CO_USI__HEIGHT__SHADING',
        })
      }
