@@ -42,6 +42,9 @@ export class HomePage {
   public alert_executed: number;
   public safe_executed: number;
 
+  // CAMS variables
+  camsLayers: any;
+
   // OpenWeatherMap variables
   uv_URL = 'http://api.openweathermap.org/data/2.5/uvi?appid=';
   weatherURL = 'http://api.openweathermap.org/data/2.5/weather?appid=';
@@ -155,6 +158,20 @@ export class HomePage {
       attributions: 'www.tphangout.com',
       maxZoom: 20
     }).addTo(this.map);
+    this.camsLayers = {
+      Empty: leaflet.tileLayer.wms(''),
+      CO: leaflet.tileLayer.wms('https://geoservices.meteofrance.fr/api/__GC1AokW964hWyGlMlK7zKf80QjQvmv3Xp4M2Py61zYtHLeh5mME1KA__/CAMS50-ENSEMBLE-FORECAST-01-EUROPE-WMS?', {
+            layers: 'CO__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
+            format: 'image/png',
+            version: '1.3.0',
+            crs: leaflet.CRS.EPSG4326,
+            transparent: true,
+            //styles: 'CO_USI__HEIGHT__SHADING',
+       })
+     }
+     
+     leaflet.control.layers(this.camsLayers).addTo(this.map);
+
      this.map.locate({
       watch: true,
       setView: true,
@@ -284,7 +301,7 @@ export class HomePage {
       let result = this.http.get(this.uv_URL + this.APIkey + '&lat=' + latitude + '&lon=' + longitude)
       .subscribe(UVData=> {
         // 8 - 10.9 is the correct very high UV index
-        if (UVData["value"] > 3) {
+        if (UVData["value"] > 8) {
           console.log(UVData["value"]);
           this.presentAlert(UVData["value"]);
           this.tts.speak('The UV index in your area is '  + UVData["value"] + 
