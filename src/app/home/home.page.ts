@@ -166,6 +166,7 @@ export class HomePage {
             format: 'image/png',
             version: '1.3.0',
             crs: leaflet.CRS.EPSG4326,
+            opacity: '0.5',
             //styles: 'CO_USI__HEIGHT__SHADING',
        })
      }
