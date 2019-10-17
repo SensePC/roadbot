@@ -18,6 +18,7 @@ export class HomePage {
   // Get 'map' from DOM
   @ViewChild('map', {static: true}) mapContainer: ElementRef;
   map: any;
+  crs: any;
   
   data:any = {};
   options1: any = {};
@@ -153,28 +154,64 @@ export class HomePage {
       iconUrl: require("leaflet/dist/images/marker-icon.png"),
       shadowUrl: require("leaflet/dist/images/marker-shadow.png")
     });
+     
     this.map = leaflet.map("map").setView(new leaflet.LatLng(35,25), 3);
+
+    // BaseLayer
     leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attributions: 'www.tphangout.com',
-      crs: leaflet.CRS.EPSG4326,
-      maxZoom: 20
+      maxZoom: 20,
     }).addTo(this.map);
+
+    // Cams data layers
     this.camsLayers = {
-      Empty: leaflet.tileLayer.wms(''),
-      CO: leaflet.tileLayer.wms('https://geoservices.meteofrance.fr/api/__GC1AokW964hWyGlMlK7zKf80QjQvmv3Xp4M2Py61zYtHLeh5mME1KA__/CAMS50-ENSEMBLE-FORECAST-01-EUROPE-WMS?', {
+      "Empty": leaflet.tileLayer.wms(''),
+      "CO": leaflet.tileLayer.wms('https://geoservices.meteofrance.fr/api/__GC1AokW964hWyGlMlK7zKf80QjQvmv3Xp4M2Py61zYtHLeh5mME1KA__/CAMS50-ENSEMBLE-FORECAST-01-EUROPE-WMS?', {
             layers: 'CO__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
             format: 'image/png',
             version: '1.3.0',
             crs: leaflet.CRS.EPSG4326,
             opacity: '0.5',
             //styles: 'CO_USI__HEIGHT__SHADING',
-       })
-     }
-     
-     leaflet.control.layers(this.camsLayers).addTo(this.map);
+        }),
+      "O3": leaflet.tileLayer.wms('https://geoservices.meteofrance.fr/api/__GC1AokW964hWyGlMlK7zKf80QjQvmv3Xp4M2Py61zYtHLeh5mME1KA__/CAMS50-ENSEMBLE-FORECAST-01-EUROPE-WMS?', {
+            layers: 'O3__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
+            format: 'image/png',
+            version: '1.3.0',
+            crs: leaflet.CRS.EPSG4326,
+            opacity: '0.5',
+         }),
+       }
+
+    leaflet.control.layers(this.camsLayers).addTo(this.map);
+    // add Legends
+		var legendCO = leaflet.control({position: 'topright'});
+		legendCO.onAdd = function(map) {
+			var div = leaflet.DomUtil.create('div', 'info legend');
+			div.innerHTML += '<img src="https://geoservices.meteofrance.fr/api/__GC1AokW964hWyGlMlK7zKf80QjQvmv3Xp4M2Py61zYtHLeh5mME1KA__/CAMS50-ENSEMBLE-FORECAST-01-EUROPE-WMS?service=WMS&version=1.3.0&sld_version=1.1.0&request=GetLegendGraphic&layer=CO__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND&style=CO_USI__HEIGHT__SHADING&format=image/png" alt="legend" width="100" height="300">'
+			return div;
+    };
+
+    var legendO3 = leaflet.control({position: 'topright'});
+		legendO3.onAdd = function(map) {
+			var div = leaflet.DomUtil.create('div', 'info legend');
+			div.innerHTML += '<img src="ttps://geoservices.meteofrance.fr/api/__GC1AokW964hWyGlMlK7zKf80QjQvmv3Xp4M2Py61zYtHLeh5mME1KA__/CAMS50-ENSEMBLE-FORECAST-01-EUROPE-WMS?service=WMS&version=1.3.0&sld_version=1.1.0&request=GetLegendGraphic&layer=O3__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND&style=O3_USI__HEIGHT__SHADING&format=image/png" alt="legend" width="100" height="300">'
+			return div;
+    };
+		
+    this.map.on('baselayerchange', function (eventLayer) {
+      // Switch to the CO legend...
+      if (eventLayer.name === 'CO') {
+          legendCO.addTo(this);
+      } 
+      if (eventLayer.name === 'O3') {
+        legendO3.addTo(this);
+        this.removeControl(legendCO);
+      }
+  });
 
      this.map.locate({
-      watch: true,
+      // watch: true,
       setView: true,
       maxZoom: 18
     }).on('locationfound', (e) => {
