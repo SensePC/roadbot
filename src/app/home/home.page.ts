@@ -316,7 +316,7 @@ export class HomePage {
   });
 
      this.map.locate({
-      // watch: true,
+      watch: true,
       setView: true,
       maxZoom: 18
     }).on('locationfound', (e) => {
