@@ -181,6 +181,34 @@ export class HomePage {
             crs: leaflet.CRS.EPSG4326,
             opacity: '0.5',
          }),
+      "NO2": leaflet.tileLayer.wms('https://geoservices.meteofrance.fr/api/__GC1AokW964hWyGlMlK7zKf80QjQvmv3Xp4M2Py61zYtHLeh5mME1KA__/CAMS50-ENSEMBLE-FORECAST-01-EUROPE-WMS?', {
+          layers: 'NO2__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
+          format: 'image/png',
+          version: '1.3.0',
+          crs: leaflet.CRS.EPSG4326,
+          opacity: '0.5',
+         }),
+      "SO2": leaflet.tileLayer.wms('https://geoservices.meteofrance.fr/api/__GC1AokW964hWyGlMlK7zKf80QjQvmv3Xp4M2Py61zYtHLeh5mME1KA__/CAMS50-ENSEMBLE-FORECAST-01-EUROPE-WMS?', {
+          layers: 'SO2__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
+          format: 'image/png',
+          version: '1.3.0',
+          crs: leaflet.CRS.EPSG4326,
+          opacity: '0.5',
+         }),
+      "PM25": leaflet.tileLayer.wms('https://geoservices.meteofrance.fr/api/__GC1AokW964hWyGlMlK7zKf80QjQvmv3Xp4M2Py61zYtHLeh5mME1KA__/CAMS50-ENSEMBLE-FORECAST-01-EUROPE-WMS?', {
+          layers: 'PM25__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
+          format: 'image/png',
+          version: '1.3.0',
+          crs: leaflet.CRS.EPSG4326,
+          opacity: '0.5',
+         }),
+      "PM10": leaflet.tileLayer.wms('https://geoservices.meteofrance.fr/api/__GC1AokW964hWyGlMlK7zKf80QjQvmv3Xp4M2Py61zYtHLeh5mME1KA__/CAMS50-ENSEMBLE-FORECAST-01-EUROPE-WMS?', {
+          layers: 'PM10__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
+          format: 'image/png',
+          version: '1.3.0',
+          crs: leaflet.CRS.EPSG4326,
+          opacity: '0.5',
+         }),
        }
 
     leaflet.control.layers(this.camsLayers).addTo(this.map);
@@ -195,18 +223,95 @@ export class HomePage {
     var legendO3 = leaflet.control({position: 'topright'});
 		legendO3.onAdd = function(map) {
 			var div = leaflet.DomUtil.create('div', 'info legend');
-			div.innerHTML += '<img src="ttps://geoservices.meteofrance.fr/api/__GC1AokW964hWyGlMlK7zKf80QjQvmv3Xp4M2Py61zYtHLeh5mME1KA__/CAMS50-ENSEMBLE-FORECAST-01-EUROPE-WMS?service=WMS&version=1.3.0&sld_version=1.1.0&request=GetLegendGraphic&layer=O3__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND&style=O3_USI__HEIGHT__SHADING&format=image/png" alt="legend" width="100" height="300">'
+			div.innerHTML += '<img src="https://geoservices.meteofrance.fr/api/__GC1AokW964hWyGlMlK7zKf80QjQvmv3Xp4M2Py61zYtHLeh5mME1KA__/CAMS50-ENSEMBLE-FORECAST-01-EUROPE-WMS?service=WMS&version=1.3.0&sld_version=1.1.0&request=GetLegendGraphic&layer=O3__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND&style=O3_USI__HEIGHT__SHADING&format=image/png" alt="legend" width="100" height="300">'
 			return div;
     };
-		
+
+    var legendNO2 = leaflet.control({position: 'topright'});
+		legendNO2.onAdd = function(map) {
+			var div = leaflet.DomUtil.create('div', 'info legend');
+			div.innerHTML += '<img src="https://geoservices.meteofrance.fr/api/__GC1AokW964hWyGlMlK7zKf80QjQvmv3Xp4M2Py61zYtHLeh5mME1KA__/CAMS50-ENSEMBLE-FORECAST-01-EUROPE-WMS?service=WMS&version=1.3.0&sld_version=1.1.0&request=GetLegendGraphic&layer=NO2__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND&style=NO2_USI__HEIGHT__SHADING&format=image/png" alt="legend" width="100" height="300">'
+			return div;
+    };
+
+    var legendSO2 = leaflet.control({position: 'topright'});
+		legendSO2.onAdd = function(map) {
+			var div = leaflet.DomUtil.create('div', 'info legend');
+			div.innerHTML += '<img src="https://geoservices.meteofrance.fr/api/__GC1AokW964hWyGlMlK7zKf80QjQvmv3Xp4M2Py61zYtHLeh5mME1KA__/CAMS50-ENSEMBLE-FORECAST-01-EUROPE-WMS?service=WMS&version=1.3.0&sld_version=1.1.0&request=GetLegendGraphic&layer=SO2__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND&style=SO2_USI__HEIGHT__SHADING&format=image/png" alt="legend" width="100" height="300">'
+			return div;
+    };
+
+    var legendPM25 = leaflet.control({position: 'topright'});
+		legendPM25.onAdd = function(map) {
+			var div = leaflet.DomUtil.create('div', 'info legend');
+			div.innerHTML += '<img src="https://geoservices.meteofrance.fr/api/__GC1AokW964hWyGlMlK7zKf80QjQvmv3Xp4M2Py61zYtHLeh5mME1KA__/CAMS50-ENSEMBLE-FORECAST-01-EUROPE-WMS?service=WMS&version=1.3.0&sld_version=1.1.0&request=GetLegendGraphic&layer=PM25__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND&style=PM25_USI__HEIGHT__SHADING&format=image/png" alt="legend" width="100" height="300">'
+			return div;
+    };
+
+    var legendPM10 = leaflet.control({position: 'topright'});
+		legendPM10.onAdd = function(map) {
+			var div = leaflet.DomUtil.create('div', 'info legend');
+			div.innerHTML += '<img src="https://geoservices.meteofrance.fr/api/__GC1AokW964hWyGlMlK7zKf80QjQvmv3Xp4M2Py61zYtHLeh5mME1KA__/CAMS50-ENSEMBLE-FORECAST-01-EUROPE-WMS?service=WMS&version=1.3.0&sld_version=1.1.0&request=GetLegendGraphic&layer=PM10__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND&style=PM10_USI__HEIGHT__SHADING&format=image/png" alt="legend" width="100" height="300">'
+			return div;
+    };
+    
+    // Switch the base layers
     this.map.on('baselayerchange', function (eventLayer) {
-      // Switch to the CO legend...
+      if (eventLayer.name === 'Empty') {
+        this.removeControl(legendCO);
+        this.removeControl(legendO3);
+        this.removeControl(legendNO2);
+        this.removeControl(legendSO2);
+        this.removeControl(legendPM25);
+        this.removeControl(legendPM10);
+      }
       if (eventLayer.name === 'CO') {
           legendCO.addTo(this);
+          this.removeControl(legendO3);
+          this.removeControl(legendNO2);
+          this.removeControl(legendSO2);
+          this.removeControl(legendPM25);
+          this.removeControl(legendPM10);
       } 
       if (eventLayer.name === 'O3') {
         legendO3.addTo(this);
         this.removeControl(legendCO);
+        this.removeControl(legendNO2);
+        this.removeControl(legendSO2);
+        this.removeControl(legendPM25);
+        this.removeControl(legendPM10);
+      }
+      if (eventLayer.name === 'NO2') {
+        legendNO2.addTo(this);
+        this.removeControl(legendCO);
+        this.removeControl(legendO3);
+        this.removeControl(legendSO2);
+        this.removeControl(legendPM25);
+        this.removeControl(legendPM10);
+      }
+      if (eventLayer.name === 'SO2') {
+        legendSO2.addTo(this);
+        this.removeControl(legendCO);
+        this.removeControl(legendO3);
+        this.removeControl(legendNO2);
+        this.removeControl(legendPM25);
+        this.removeControl(legendPM10);
+      }
+      if (eventLayer.name === 'PM25') {
+        legendPM25.addTo(this);
+        this.removeControl(legendCO);
+        this.removeControl(legendO3);
+        this.removeControl(legendNO2);
+        this.removeControl(legendSO2);
+        this.removeControl(legendPM10);
+      }
+      if (eventLayer.name === 'PM10') {
+        legendPM10.addTo(this);
+        this.removeControl(legendCO);
+        this.removeControl(legendO3);
+        this.removeControl(legendNO2);
+        this.removeControl(legendSO2);
+        this.removeControl(legendPM25);
       }
   });
 
@@ -339,7 +444,7 @@ export class HomePage {
       let result = this.http.get(this.uv_URL + this.APIkey + '&lat=' + latitude + '&lon=' + longitude)
       .subscribe(UVData=> {
         // 8 - 10.9 is the correct very high UV index
-        if (UVData["value"] > 8) {
+        if (UVData["value"]) {
           console.log(UVData["value"]);
           this.presentAlert(UVData["value"]);
           this.tts.speak('The UV index in your area is '  + UVData["value"] + 
