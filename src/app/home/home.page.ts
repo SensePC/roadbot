@@ -34,7 +34,7 @@ export class HomePage {
   isWatching:boolean;
 
   public pull: any;
-  public watch: any;
+  // public watch: any;
   public lat: number = 0;
   public lng: number = 0;
 
@@ -42,6 +42,9 @@ export class HomePage {
   public text: string;
   public alert_executed: number;
   public safe_executed: number;
+
+  // Temporary solution for not playing UVindex alert many times
+  playUValert = 0;
 
   // CAMS variables
   camsLayers: any;
@@ -409,16 +412,32 @@ export class HomePage {
        );
  }
      // UV index popup alert
-     async presentAlert(uv: any) {
+     async presentUVAlert(uv: any) {
             const alert = await this.alertCtrl.create({
               header: 'Alert',
               subHeader: 'UV Index',
               message: 'UV index in your location is: ' + uv ,
               buttons: ['OK']
             });
-        
-            await alert.present();
-          }
+            if (uv >= 3 && this.playUValert == 0) {
+              await alert.present();
+              // play the audio message
+              this.tts.speak('The UV index is ' + uv + 'which means moderate risk of harm from unprotected Sun exposure. ' +
+                             'Stay in shade near midday when the Sun is strongest. If outdoors, wear Sun protective clothing, ' +
+                             ' a wide-brimmed hat, and UV-blocking sunglasses. Generously apply broad spectrum SPF 30+ sunscreen' +
+                             'every 2 hours, even on cloudy days, and after swimming or sweating. Bright surfaces, such as sand,' +
+                             'water, and snow, will increase UV exposure');
+              this.playUValert = 1;
+            }
+            if (uv >= 8 && this.playUValert == 0) {
+              await alert.present();
+              // play the audio message
+              this.tts.speak('The UV index in your area is '  + uv + 
+                             '. It is a very high UV index. Take extra precautions' + 
+                             'because unprotected skin and eyes will be damaged and can burn quickly.');
+              this.playUValert = 1;
+              }
+            }
 
      // Weather popup
      async presentWeather(desc: any, temp: number, pressure: number, humidity: number, wind_speed: number, clouds: number) {
@@ -444,13 +463,7 @@ export class HomePage {
       let result = this.http.get(this.uv_URL + this.APIkey + '&lat=' + latitude + '&lon=' + longitude)
       .subscribe(UVData=> {
         // 8 - 10.9 is the correct very high UV index
-        if (UVData["value"] >= 8) {
-          console.log(UVData["value"]);
-          this.presentAlert(UVData["value"]);
-          this.tts.speak('The UV index in your area is '  + UVData["value"] + 
-                       '. It is a very high UV index. Take extra precautions' + 
-                      'because unprotected skin and eyes will be damaged and can burn quickly.');
-        }
+       this.presentUVAlert(UVData["value"]);
       }, err => {
           console.log(err);
          }
@@ -535,6 +548,8 @@ export class HomePage {
         watch: false
       }) 
 
+      this.playUValert = 0;
+        
       // unsubscribe the subscription, not the obsevable
       this.subscription.unsubscribe();
     }
