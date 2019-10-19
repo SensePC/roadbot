@@ -157,6 +157,27 @@ export class HomePage {
      
     this.map = leaflet.map("map").setView(new leaflet.LatLng(35,25), 3);
 
+    this.map.locate({
+      watch: false,
+      setView: true,
+      maxZoom: 18
+    }).on('locationfound', (e) => {
+      // let markerGroup = leaflet.featureGroup();
+
+      // Great trick to remove the old marker and add the new one !
+      if (this.theMarker != undefined && this.theCircle != undefined) {
+        this.map.removeLayer(this.theMarker);
+        this.map.removeLayer(this.theCircle);
+      }
+      var radius = e.accuracy / 2;
+      // theMarker and theCircle variables definition
+      this.theMarker = leaflet.marker(e.latlng).addTo(this.map);      
+      this.theCircle = leaflet.circle(e.latlng, radius).addTo(this.map);
+
+    }).on('locationerror', (err) => {
+        alert(err.message); 
+    })
+
     // BaseLayer
     leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attributions: 'www.tphangout.com',
@@ -314,27 +335,6 @@ export class HomePage {
         this.removeControl(legendPM25);
       }
   });
-
-     this.map.locate({
-      watch: true,
-      setView: true,
-      maxZoom: 18
-    }).on('locationfound', (e) => {
-      // let markerGroup = leaflet.featureGroup();
-
-      // Great trick to remove the old marker and add the new one !
-      if (this.theMarker != undefined && this.theCircle != undefined) {
-        this.map.removeLayer(this.theMarker);
-        this.map.removeLayer(this.theCircle);
-      }
-      var radius = e.accuracy / 2;
-      // theMarker and theCircle variables definition
-      this.theMarker = leaflet.marker(e.latlng).addTo(this.map);      
-      this.theCircle = leaflet.circle(e.latlng, radius).addTo(this.map);
-
-    }).on('locationerror', (err) => {
-        alert(err.message); 
-    })
   }
     //this.map.setView(new leaflet.LatLng(35.2551600,25.028161), 7);
 
@@ -512,6 +512,13 @@ export class HomePage {
         this.geoLatitude = resp.coords.latitude;
         this.geoLongitude = resp.coords.longitude; 
 
+      // start leaflet map watch
+      this.map.locate({
+        watch: true,
+        setView: true,
+        maxZoom: 18
+      })
+
        // Call OpenWeatherMap API
        this.getCurrentUVIndex(this.geoLatitude, this.geoLongitude);
 
@@ -524,6 +531,10 @@ export class HomePage {
     //Stop location update watch
     stopLocationWatch(){
       this.isWatching = false;
+      this.map.locate({
+        watch: false
+      }) 
+
       // unsubscribe the subscription, not the obsevable
       this.subscription.unsubscribe();
     }
