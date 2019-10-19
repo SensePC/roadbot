@@ -444,7 +444,7 @@ export class HomePage {
       let result = this.http.get(this.uv_URL + this.APIkey + '&lat=' + latitude + '&lon=' + longitude)
       .subscribe(UVData=> {
         // 8 - 10.9 is the correct very high UV index
-        if (UVData["value"]) {
+        if (UVData["value"] >= 8) {
           console.log(UVData["value"]);
           this.presentAlert(UVData["value"]);
           this.tts.speak('The UV index in your area is '  + UVData["value"] + 
