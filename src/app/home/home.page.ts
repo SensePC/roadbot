@@ -75,8 +75,8 @@ export class HomePage {
               private menu: MenuController)
  {
 
-  this.data.title = '';
   this.data.desc = '';
+  this.data.dist = '';
   this.data.response = '';
   this.http = http;
 
@@ -109,12 +109,12 @@ export class HomePage {
       header: 'Add an event',
       inputs: [
         {
-          name: 'title',
-          placeholder: 'Title'
+          name: 'desc',
+          placeholder: 'Description'
         },
         {
-          name: 'desc',
-          placeholder: 'Description',
+          name: 'dist',
+          placeholder: 'Alert Distance',
         }
       ],
       buttons: [
@@ -126,10 +126,10 @@ export class HomePage {
               let lon = position.coords.longitude;
               let latLng = {lat: lat, lon:lon}
           
-              var title = data.title;
               var desc = data.desc;
-              var desc_loc = {lat: lat, lon: lon, title: title, desc: desc}
-              var link = 'http://192.168.1.5:8000/results/';
+              var dist = data.dist;
+              var desc_loc = {lat: lat, lon: lon, desc: desc, dist: dist}
+              var link = 'http://192.168.1.4:8000/results/';
               var myData = JSON.stringify(desc_loc);
        
        
@@ -400,7 +400,7 @@ export class HomePage {
     headers.append('Accept','application/json');
     headers.append('content-type','application/json');
     let options = new RequestOptions({ headers:headers,withCredentials: true}); */
-     var link = 'http:///147.27.31.219:81/roadbot_b/data/';
+     var link = 'http://192.168.1.4:8000/data/';
      // We use .map function in order to be able to use json response
      // as a single array (data)
      this.pull = this.http.get(link, {params: coords})
@@ -451,9 +451,7 @@ export class HomePage {
               // play the audio message
               this.tts.speak('The UV index is ' + uv + 'which means moderate risk of harm from unprotected Sun exposure. ' +
                              'Stay in shade near midday when the Sun is strongest. If outdoors, wear Sun protective clothing, ' +
-                             ' a wide-brimmed hat, and UV-blocking sunglasses. Generously apply broad spectrum SPF 30+ sunscreen' +
-                             'every 2 hours, even on cloudy days, and after swimming or sweating. Bright surfaces, such as sand,' +
-                             'water, and snow, will increase UV exposure');
+                             ' a wide-brimmed hat, and UV-blocking sunglasses.');
               this.playUValert = 1;
             }
             if (uv >= 8 && this.playUValert == 0) {
