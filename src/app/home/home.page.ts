@@ -79,6 +79,11 @@ export class HomePage {
   this.data.desc = '';
   this.data.response = '';
   this.http = http;
+
+  // setting tts var
+  this.text = 'Initial text';
+  this.alert_executed = 1;
+  this.safe_executed = 1;
     
   }
   // popup window options
@@ -342,8 +347,24 @@ export class HomePage {
     //this.map.setView(new leaflet.LatLng(35.2551600,25.028161), 7);
 
   // Function to play Alert responded text (database results)
-  playAlertText(info, cause, str_addr) {
-    this.text = 'Alert. Many car accidents have happened in ' + str_addr + ' area because of ' + cause;
+  async playAlertText(data) {
+    var causes = '';
+    var i;
+    for (i=1; i < data.length; i++) {
+        causes += data[i] + "<br>"      
+      }
+    
+    const alert = await this.alertCtrl.create({
+      header: 'Alert !',
+      subHeader: 'Car accidents info',
+      message: 'Causes: ' + causes,
+      buttons: ['OK']
+    });
+     console.log(data.length);
+     await alert.present();
+
+    this.text = 'Alert. Car accidents have happened in this area. ' +
+                'Causes: ' + causes;
     console.log(this.text);
     this.tts.speak({
     text: this.text
@@ -353,9 +374,17 @@ export class HomePage {
     }
 
  // Function to play Safe responded text (database results)
- playSafeText() {
-     this.text = 'You are driving in a safe area'
+ async playSafeText() {
+    const alert = await this.alertCtrl.create({
+      header: 'You are safe !',
+      // subHeader: '',
+      message: 'You are driving in a safe area.',
+      buttons: ['OK']
+    });
      console.log(this.text);
+     await alert.present();
+
+     this.text = 'You are driving in a safe area';
      this.tts.speak({
          text: this.text
       })
@@ -371,28 +400,26 @@ export class HomePage {
     headers.append('Accept','application/json');
     headers.append('content-type','application/json');
     let options = new RequestOptions({ headers:headers,withCredentials: true}); */
-     var link = 'http://147.27.31.219:81/roadbot_b/data/';
+     var link = 'http:///147.27.31.219:81/roadbot_b/data/';
      // We use .map function in order to be able to use json response
      // as a single array (data)
      this.pull = this.http.get(link, {params: coords})
          .subscribe(data=> {
          // assign card's variables to the responded array
+         console.log(data);
          this.info = data[0];
-         this.cause = data[1];
-         this.str_addr = data[2];
-         this.data.accid_num = data[3];
-         console.log(this.cause);
+         
+         /*
          // Run update inside of Angular's zone in order to display on the screen
          this.zone.run(() => {
            this.info = data[0];
-           this.cause = data[1];
-           this.str_addr = data[2];
-           this.accid_num = data[3];
-         
+           this.cause = data[1];         
          });
+        */  
+
          // playText calls functionality
          if (this.info == 'Alert' && this.alert_executed == 1) {
-             this.playAlertText(this.info, this.cause, this.str_addr)
+             this.playAlertText(data)
              // convert alert_executed to 0 in order to not playAlertText
              // function be able to executed more than once
              this.alert_executed = 0;
@@ -535,9 +562,13 @@ export class HomePage {
        // Call OpenWeatherMap API
        this.getCurrentUVIndex(this.geoLatitude, this.geoLongitude);
 
+       // testing point
+       // var latlng = {lat: 35.33553, lng: 25.14066} 
+       // testing point
+       // var latlng = {lat: 35.46830, lng: 23.76085}
        // send the data
-       var latlng = {lat: this.geoLatitude, lng: this.geoLongitude} 
-       // this.getData(latlng);
+       var latlng = {lat: this.geoLatitude, lng: this.geoLongitude}
+       this.getData(latlng);
       });
     }
   
@@ -549,9 +580,12 @@ export class HomePage {
       }) 
 
       this.playUValert = 0;
+      // setting tts var
+      this.text = 'Initial text';
+      this.alert_executed = 1;
+      this.safe_executed = 1;
         
       // unsubscribe the subscription, not the obsevable
       this.subscription.unsubscribe();
     }
-  
 }
