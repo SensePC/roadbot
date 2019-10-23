@@ -129,7 +129,7 @@ export class HomePage {
               var desc = data.desc;
               var dist = data.dist;
               var desc_loc = {lat: lat, lon: lon, desc: desc, dist: dist}
-              var link = 'http://192.168.1.4:8000/results/';
+              var link = 'http://147.27.31.219:82/results/';
               var myData = JSON.stringify(desc_loc);
        
        
@@ -400,7 +400,7 @@ export class HomePage {
     headers.append('Accept','application/json');
     headers.append('content-type','application/json');
     let options = new RequestOptions({ headers:headers,withCredentials: true}); */
-     var link = 'http://192.168.1.4:8000/data/';
+     var link = 'http://147.27.31.219:82/data/';
      // We use .map function in order to be able to use json response
      // as a single array (data)
      this.pull = this.http.get(link, {params: coords})
