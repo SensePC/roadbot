@@ -34,7 +34,6 @@ export class HomePage {
   isWatching:boolean;
 
   public pull: any;
-  // public watch: any;
   public lat: number = 0;
   public lng: number = 0;
 
@@ -46,8 +45,8 @@ export class HomePage {
   // Temporary solution for not playing UVindex alert many times
   playUValert = 0;
 
-  // CAMS variables
-  camsLayers: any;
+  // CAMS and EMS variables
+  coperLayers: any;
 
   // OpenWeatherMap variables
   uv_URL = 'http://api.openweathermap.org/data/2.5/uvi?appid=';
@@ -191,9 +190,9 @@ export class HomePage {
       attributions: 'www.tphangout.com',
       maxZoom: 20,
     }).addTo(this.map);
-
-    // Cams data layers
-    this.camsLayers = {
+    
+    // CAMS and EMS Copernicus layers
+    this.coperLayers = {
       "Empty": leaflet.tileLayer.wms(''),
       "CO": leaflet.tileLayer.wms('https://geoservices.meteofrance.fr/api/__GC1AokW964hWyGlMlK7zKf80QjQvmv3Xp4M2Py61zYtHLeh5mME1KA__/CAMS50-ENSEMBLE-FORECAST-01-EUROPE-WMS?', {
             layers: 'CO__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
@@ -238,10 +237,24 @@ export class HomePage {
           crs: leaflet.CRS.EPSG4326,
           opacity: '0.5',
          }),
-       }
+      "Landslide Susceptibility": leaflet.tileLayer.wms('https://www.efas.eu/api/wms/', {
+          layers: 'mapserver:LandSlide',
+          format: 'image/png',
+          version: '1.3.0',
+          crs: leaflet.CRS.EPSG3857,
+          opacity: '0.5',
+         }),
+      "Acc. Precip. Det. ECMWF": leaflet.tileLayer.wms('https://www.efas.eu/api/wms/', {
+          layers: 'mapserver:rainEUD',
+          format: 'image/png',
+          version: '1.3.0',
+          crs: leaflet.CRS.EPSG3857,
+          opacity: '0.5',
+         }),
+      }
 
-    leaflet.control.layers(this.camsLayers).addTo(this.map);
-    // add Legends
+    leaflet.control.layers(this.coperLayers).addTo(this.map);
+    // add CAMS data Legends
 		var legendCO = leaflet.control({position: 'topright'});
 		legendCO.onAdd = function(map) {
 			var div = leaflet.DomUtil.create('div', 'info legend');
@@ -283,7 +296,22 @@ export class HomePage {
 			div.innerHTML += '<img src="https://geoservices.meteofrance.fr/api/__GC1AokW964hWyGlMlK7zKf80QjQvmv3Xp4M2Py61zYtHLeh5mME1KA__/CAMS50-ENSEMBLE-FORECAST-01-EUROPE-WMS?service=WMS&version=1.3.0&sld_version=1.1.0&request=GetLegendGraphic&layer=PM10__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND&style=PM10_USI__HEIGHT__SHADING&format=image/png" alt="legend" width="100" height="300">'
 			return div;
     };
-    
+
+    // add EMS data legends
+    var legendLandslide = leaflet.control({position: 'bottomleft'});
+		legendLandslide.onAdd = function(map) {
+			var div = leaflet.DomUtil.create('div', 'info legend');
+			div.innerHTML += '<img src="https://www.efas.eu/api/wms/?request=GetLegend&layers=mapserver:LandSlide&styles=default&width=105&height=185&">'
+			return div;
+    };
+
+    var rainEUD = leaflet.control({position: 'bottomleft'});
+		rainEUD.onAdd = function(map) {
+			var div = leaflet.DomUtil.create('div', 'info legend');
+			div.innerHTML += '<img src="https://www.efas.eu/api/wms/?request=GetLegend&layers=mapserver:rainEUD&styles=default&width=35&height=5&">'
+			return div;
+    };
+
     // Switch the base layers
     this.map.on('baselayerchange', function (eventLayer) {
       if (eventLayer.name === 'Empty') {
@@ -293,6 +321,8 @@ export class HomePage {
         this.removeControl(legendSO2);
         this.removeControl(legendPM25);
         this.removeControl(legendPM10);
+        this.removeControl(legendLandslide);
+        this.removeControl(rainEUD);
       }
       if (eventLayer.name === 'CO') {
           legendCO.addTo(this);
@@ -301,6 +331,8 @@ export class HomePage {
           this.removeControl(legendSO2);
           this.removeControl(legendPM25);
           this.removeControl(legendPM10);
+          this.removeControl(legendLandslide);
+          this.removeControl(rainEUD);
       } 
       if (eventLayer.name === 'O3') {
         legendO3.addTo(this);
@@ -309,6 +341,8 @@ export class HomePage {
         this.removeControl(legendSO2);
         this.removeControl(legendPM25);
         this.removeControl(legendPM10);
+        this.removeControl(legendLandslide);
+        this.removeControl(rainEUD);
       }
       if (eventLayer.name === 'NO2') {
         legendNO2.addTo(this);
@@ -317,6 +351,8 @@ export class HomePage {
         this.removeControl(legendSO2);
         this.removeControl(legendPM25);
         this.removeControl(legendPM10);
+        this.removeControl(legendLandslide);
+        this.removeControl(rainEUD);
       }
       if (eventLayer.name === 'SO2') {
         legendSO2.addTo(this);
@@ -325,6 +361,8 @@ export class HomePage {
         this.removeControl(legendNO2);
         this.removeControl(legendPM25);
         this.removeControl(legendPM10);
+        this.removeControl(legendLandslide);
+        this.removeControl(rainEUD);
       }
       if (eventLayer.name === 'PM25') {
         legendPM25.addTo(this);
@@ -333,6 +371,8 @@ export class HomePage {
         this.removeControl(legendNO2);
         this.removeControl(legendSO2);
         this.removeControl(legendPM10);
+        this.removeControl(legendLandslide);
+        this.removeControl(rainEUD);
       }
       if (eventLayer.name === 'PM10') {
         legendPM10.addTo(this);
@@ -341,11 +381,33 @@ export class HomePage {
         this.removeControl(legendNO2);
         this.removeControl(legendSO2);
         this.removeControl(legendPM25);
+        this.removeControl(legendLandslide);
+        this.removeControl(rainEUD);
       }
-  });
-  }
-    //this.map.setView(new leaflet.LatLng(35.2551600,25.028161), 7);
+      if (eventLayer.name === 'Landslide Susceptibility') {
+        legendLandslide.addTo(this);
+        this.removeControl(legendCO);
+        this.removeControl(legendO3);
+        this.removeControl(legendNO2);
+        this.removeControl(legendSO2);
+        this.removeControl(legendPM25);
+        this.removeControl(legendPM10);
+        this.removeControl(rainEUD);
+      }
+      if (eventLayer.name === 'Acc. Precip. Det. ECMWF') {
+        rainEUD.addTo(this);
+        this.removeControl(legendCO);
+        this.removeControl(legendO3);
+        this.removeControl(legendNO2);
+        this.removeControl(legendSO2);
+        this.removeControl(legendPM25);
+        this.removeControl(legendPM10);
+        this.removeControl(legendLandslide);
+      }
+    });
 
+  }
+  
   // Function to play Alert responded text (database results)
   async playAlertText(data) {
     var causes = '';
