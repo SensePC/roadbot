@@ -5,6 +5,7 @@ import { AlertController } from '@ionic/angular';
 import { MenuController } from '@ionic/angular';
 import { TextToSpeech } from '@ionic-native/text-to-speech/ngx';
 import { NgZone } from '@angular/core';
+import { Insomnia } from '@ionic-native/insomnia/ngx';
 // import { NativeGeocoder, NativeGeocoderOptions, NativeGeocoderResult } from '@ionic-native/native-geocoder/ngx';
 import leaflet from 'leaflet';
 
@@ -71,7 +72,9 @@ export class HomePage {
               private tts: TextToSpeech,
               public alertCtrl: AlertController,
               //private nativeGeocoder: NativeGeocoder,
-              private menu: MenuController)
+              private menu: MenuController,
+              private insomnia: Insomnia,
+              )
  {
 
   this.data.desc = '';
@@ -606,6 +609,7 @@ export class HomePage {
       frequency: 3000,
       enableHighAccuracy: true
       };
+      this.insomnia.keepAwake()
       this.isWatching = true;
       this.watchLocationUpdates = this.geolocation.watchPosition(this.options2);
       this.subscription = this.watchLocationUpdates.subscribe((resp: Geoposition) => {
@@ -634,6 +638,7 @@ export class HomePage {
   
     //Stop location update watch
     stopLocationWatch(){
+      this.insomnia.allowSleepAgain()
       this.isWatching = false;
       this.map.locate({
         watch: false
