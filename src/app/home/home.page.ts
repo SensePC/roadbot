@@ -537,7 +537,7 @@ export class HomePage {
         header: 'Current Weather',
         // subHeader: '',
         message: '<b>Description: </b>' + desc + '<br>' +
-                  '<b>Temprature: </b>' + Ctemp + '<br>' +
+                  '<b>Temperature: </b>' + Ctemp + '<br>' +
                   '<b>Pressure: </b>' + pressure + '<br>' +
                   '<b>Humidity: </b>' + humidity + '<br>' +
                   '<b>Wind speed: </b>' + wind_speed + '<br>' +
