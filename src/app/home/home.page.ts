@@ -591,7 +591,7 @@ export class HomePage {
             this.presentWeather(description, temperature, pressure, humidity, wind_speed, clouds);
             this.tts.speak('Current weather in your area. ' + 
                        'Description ' + weatherData["weather"]["0"]["description"] + 
-                       '. Temperature ' + weatherData["main"]["temp"] +
+                       '. Temperature ' + (Math.floor(Number(weatherData["main"]["temp"]) - 272.15)).toString() +
                        '. Pressure ' + weatherData["main"]["pressure"] +
                        '. Humidity ' + weatherData["main"]["humidity"] +
                        '. Wind speed ' + weatherData["wind"]["speed"] +
