@@ -116,7 +116,7 @@ export class HomePage {
         },
         {
           name: 'dist',
-          placeholder: 'Alert Distance',
+          placeholder: 'Alert Distance (meters)',
         }
       ],
       buttons: [
@@ -133,8 +133,7 @@ export class HomePage {
               var desc_loc = {lat: lat, lon: lon, desc: desc, dist: dist}
               var link = 'http://147.27.31.219:82/results/';
               var myData = JSON.stringify(desc_loc);
-       
-       
+          
           this.http.post(link, myData)
             .subscribe(data => {
             this.data.response = data["_body"]; 
@@ -185,7 +184,8 @@ export class HomePage {
       this.theCircle = leaflet.circle(e.latlng, radius).addTo(this.map);
 
     }).on('locationerror', (err) => {
-        alert(err.message); 
+        // alert(err.message); 
+        alert("Your location cannot be found, please try to enable the device location.")
     })
 
     // BaseLayer
@@ -573,7 +573,9 @@ export class HomePage {
         
         this.getCurrentWeather(this.geoLatitude, this.geoLongitude);
        }).catch((error) => {
-         alert('Error getting location'+ JSON.stringify(error));
+         // alert('Error getting location'+ JSON.stringify(error));
+         alert("Your location cannot be found, please try to enable the device location.");
+
        });
     }
 
