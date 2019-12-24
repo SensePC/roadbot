@@ -416,8 +416,9 @@ export class HomePage {
   async playAlertText(data) {
     var causes = '';
     var i;
-    for (i=1; i < data.length; i++) {
-        causes += data[i] + "<br>"      
+    // structure of the data list: [cause1, cause1Dist, cause2, cause2Dist]
+    for (i=1; i < data.length; i += 2) {
+        causes += data[i] + '- Distance:' + data[i + 1] + "<br>"      
       }
     
     const alert = await this.alertCtrl.create({
