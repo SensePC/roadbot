@@ -415,10 +415,16 @@ export class HomePage {
   // Function to play Alert responded text (database results)
   async playAlertText(data) {
     var causes = '';
+    var causesForText = '';
     var i;
     // structure of the data list: [cause1, cause1Dist, cause2, cause2Dist]
     for (i=1; i < data.length; i += 2) {
         causes += data[i] + '- Distance:' + data[i + 1] + "<br>"      
+      }
+
+    // Build the text message for causes
+    for (i=1; i < data.length; i += 2) {
+        causesForText += data[i] + '. Distance:' + data[i + 1] + '. ';     
       }
     
     const alert = await this.alertCtrl.create({
@@ -427,11 +433,13 @@ export class HomePage {
       message: 'Causes: ' + causes,
       buttons: ['OK']
     });
-     console.log(data.length);
+     console.log(causes);
      await alert.present();
-
+     
     this.text = 'Alert. Car accidents have happened in this area. ' +
-                'Causes: ' + causes;
+                'Related information. ' + 
+                causesForText;
+      
     console.log(this.text);
     this.tts.speak({
     text: this.text
@@ -533,7 +541,7 @@ export class HomePage {
 
      // Weather popup
      async presentWeather(desc: any, temp: number, pressure: number, humidity: number, wind_speed: number, clouds: number) {
-      let Ctemp = Math.floor(Number(temp) - 273.15);
+      let Ctemp = Math.floor(Number(temp) - 272.15);
 
       const alert = await this.alertCtrl.create({
         header: 'Current Weather',
