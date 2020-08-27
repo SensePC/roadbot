@@ -198,44 +198,44 @@ export class HomePage {
     // CAMS and EMS Copernicus layers
     this.coperLayers = {
       "Empty": leaflet.tileLayer.wms(''),
-      "CO": leaflet.tileLayer.wms('https://geoservices.meteofrance.fr/api/__GC1AokW964hWyGlMlK7zKf80QjQvmv3Xp4M2Py61zYtHLeh5mME1KA__/CAMS50-ENSEMBLE-FORECAST-01-EUROPE-WMS?', {
-            layers: 'CO__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
+      "CO": leaflet.tileLayer.wms('https://apps.ecmwf.int/wms/?token=public&request=getmap?', {
+            layers: 'composition_europe_co_forecast_surface',
             format: 'image/png',
             version: '1.3.0',
             crs: leaflet.CRS.EPSG4326,
             opacity: '0.5',
             //styles: 'CO_USI__HEIGHT__SHADING',
         }),
-      "O3": leaflet.tileLayer.wms('https://geoservices.meteofrance.fr/api/__GC1AokW964hWyGlMlK7zKf80QjQvmv3Xp4M2Py61zYtHLeh5mME1KA__/CAMS50-ENSEMBLE-FORECAST-01-EUROPE-WMS?', {
-            layers: 'O3__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
+      "O3": leaflet.tileLayer.wms('https://apps.ecmwf.int/wms/?token=public&request=getmap?', {
+            layers: 'composition_europe_o3_forecast_surface',
             format: 'image/png',
             version: '1.3.0',
             crs: leaflet.CRS.EPSG4326,
             opacity: '0.5',
          }),
-      "NO2": leaflet.tileLayer.wms('https://geoservices.meteofrance.fr/api/__GC1AokW964hWyGlMlK7zKf80QjQvmv3Xp4M2Py61zYtHLeh5mME1KA__/CAMS50-ENSEMBLE-FORECAST-01-EUROPE-WMS?', {
-          layers: 'NO2__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
+      "NO2": leaflet.tileLayer.wms('https://apps.ecmwf.int/wms/?token=public&request=getmap?', {
+          layers: 'composition_europe_no2_forecast_surface',
           format: 'image/png',
           version: '1.3.0',
           crs: leaflet.CRS.EPSG4326,
           opacity: '0.5',
          }),
-      "SO2": leaflet.tileLayer.wms('https://geoservices.meteofrance.fr/api/__GC1AokW964hWyGlMlK7zKf80QjQvmv3Xp4M2Py61zYtHLeh5mME1KA__/CAMS50-ENSEMBLE-FORECAST-01-EUROPE-WMS?', {
-          layers: 'SO2__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
+      "SO2": leaflet.tileLayer.wms('https://apps.ecmwf.int/wms/?token=public&request=getmap?', {
+          layers: 'composition_europe_so2_forecast_surface',
           format: 'image/png',
           version: '1.3.0',
           crs: leaflet.CRS.EPSG4326,
           opacity: '0.5',
          }),
-      "PM25": leaflet.tileLayer.wms('https://geoservices.meteofrance.fr/api/__GC1AokW964hWyGlMlK7zKf80QjQvmv3Xp4M2Py61zYtHLeh5mME1KA__/CAMS50-ENSEMBLE-FORECAST-01-EUROPE-WMS?', {
-          layers: 'PM25__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
+      "PM25": leaflet.tileLayer.wms('https://apps.ecmwf.int/wms/?token=public&request=getmap?', {
+          layers: 'composition_europe_pm2p5_forecast_surface',
           format: 'image/png',
           version: '1.3.0',
           crs: leaflet.CRS.EPSG4326,
           opacity: '0.5',
          }),
-      "PM10": leaflet.tileLayer.wms('https://geoservices.meteofrance.fr/api/__GC1AokW964hWyGlMlK7zKf80QjQvmv3Xp4M2Py61zYtHLeh5mME1KA__/CAMS50-ENSEMBLE-FORECAST-01-EUROPE-WMS?', {
-          layers: 'PM10__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
+      "PM10": leaflet.tileLayer.wms('https://apps.ecmwf.int/wms/?token=public&request=getmap?', {
+          layers: 'composition_europe_pm10_forecast_surface',
           format: 'image/png',
           version: '1.3.0',
           crs: leaflet.CRS.EPSG4326,
@@ -259,45 +259,45 @@ export class HomePage {
 
     leaflet.control.layers(this.coperLayers).addTo(this.map);
     // add CAMS data Legends
-		var legendCO = leaflet.control({position: 'topright'});
+		var legendCO = leaflet.control({position: 'bottomleft'});
 		legendCO.onAdd = function(map) {
 			var div = leaflet.DomUtil.create('div', 'info legend');
-			div.innerHTML += '<img src="https://geoservices.meteofrance.fr/api/__GC1AokW964hWyGlMlK7zKf80QjQvmv3Xp4M2Py61zYtHLeh5mME1KA__/CAMS50-ENSEMBLE-FORECAST-01-EUROPE-WMS?service=WMS&version=1.3.0&sld_version=1.1.0&request=GetLegendGraphic&layer=CO__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND&style=CO_USI__HEIGHT__SHADING&format=image/png" alt="legend" width="100" height="300">'
+			div.innerHTML += '<img src="https://apps.ecmwf.int/wms/?token=public&request=GetLegend&layers=composition_europe_co_forecast_surface&format=image/png" alt="legend">'
 			return div;
-    };
+    }; 
 
-    var legendO3 = leaflet.control({position: 'topright'});
+    var legendO3 = leaflet.control({position: 'bottomleft'});
 		legendO3.onAdd = function(map) {
 			var div = leaflet.DomUtil.create('div', 'info legend');
-			div.innerHTML += '<img src="https://geoservices.meteofrance.fr/api/__GC1AokW964hWyGlMlK7zKf80QjQvmv3Xp4M2Py61zYtHLeh5mME1KA__/CAMS50-ENSEMBLE-FORECAST-01-EUROPE-WMS?service=WMS&version=1.3.0&sld_version=1.1.0&request=GetLegendGraphic&layer=O3__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND&style=O3_USI__HEIGHT__SHADING&format=image/png" alt="legend" width="100" height="300">'
+			div.innerHTML += '<img src="https://apps.ecmwf.int/wms/?token=public&request=GetLegend&layers=composition_europe_o3_forecast_surface&format=image/png" alt="legend">'
 			return div;
     };
 
-    var legendNO2 = leaflet.control({position: 'topright'});
+    var legendNO2 = leaflet.control({position: 'bottomleft'});
 		legendNO2.onAdd = function(map) {
 			var div = leaflet.DomUtil.create('div', 'info legend');
-			div.innerHTML += '<img src="https://geoservices.meteofrance.fr/api/__GC1AokW964hWyGlMlK7zKf80QjQvmv3Xp4M2Py61zYtHLeh5mME1KA__/CAMS50-ENSEMBLE-FORECAST-01-EUROPE-WMS?service=WMS&version=1.3.0&sld_version=1.1.0&request=GetLegendGraphic&layer=NO2__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND&style=NO2_USI__HEIGHT__SHADING&format=image/png" alt="legend" width="100" height="300">'
+			div.innerHTML += '<img src="https://apps.ecmwf.int/wms/?token=public&request=GetLegend&layers=composition_europe_no2_forecast_surface&format=image/png" alt="legend">'
 			return div;
     };
 
-    var legendSO2 = leaflet.control({position: 'topright'});
+    var legendSO2 = leaflet.control({position: 'bottomleft'});
 		legendSO2.onAdd = function(map) {
 			var div = leaflet.DomUtil.create('div', 'info legend');
-			div.innerHTML += '<img src="https://geoservices.meteofrance.fr/api/__GC1AokW964hWyGlMlK7zKf80QjQvmv3Xp4M2Py61zYtHLeh5mME1KA__/CAMS50-ENSEMBLE-FORECAST-01-EUROPE-WMS?service=WMS&version=1.3.0&sld_version=1.1.0&request=GetLegendGraphic&layer=SO2__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND&style=SO2_USI__HEIGHT__SHADING&format=image/png" alt="legend" width="100" height="300">'
+			div.innerHTML += '<img src="https://apps.ecmwf.int/wms/?token=public&request=GetLegend&layers=composition_europe_so2_forecast_surface&format=image/png" alt="legend">'
 			return div;
     };
 
-    var legendPM25 = leaflet.control({position: 'topright'});
+    var legendPM25 = leaflet.control({position: 'bottomleft'});
 		legendPM25.onAdd = function(map) {
 			var div = leaflet.DomUtil.create('div', 'info legend');
-			div.innerHTML += '<img src="https://geoservices.meteofrance.fr/api/__GC1AokW964hWyGlMlK7zKf80QjQvmv3Xp4M2Py61zYtHLeh5mME1KA__/CAMS50-ENSEMBLE-FORECAST-01-EUROPE-WMS?service=WMS&version=1.3.0&sld_version=1.1.0&request=GetLegendGraphic&layer=PM25__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND&style=PM25_USI__HEIGHT__SHADING&format=image/png" alt="legend" width="100" height="300">'
+			div.innerHTML += '<img src="https://apps.ecmwf.int/wms/?token=public&request=GetLegend&layers=composition_europe_pm2p5_forecast_surface&format=image/png" alt="legend">'
 			return div;
     };
 
-    var legendPM10 = leaflet.control({position: 'topright'});
+    var legendPM10 = leaflet.control({position: 'bottomleft'});
 		legendPM10.onAdd = function(map) {
 			var div = leaflet.DomUtil.create('div', 'info legend');
-			div.innerHTML += '<img src="https://geoservices.meteofrance.fr/api/__GC1AokW964hWyGlMlK7zKf80QjQvmv3Xp4M2Py61zYtHLeh5mME1KA__/CAMS50-ENSEMBLE-FORECAST-01-EUROPE-WMS?service=WMS&version=1.3.0&sld_version=1.1.0&request=GetLegendGraphic&layer=PM10__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND&style=PM10_USI__HEIGHT__SHADING&format=image/png" alt="legend" width="100" height="300">'
+			div.innerHTML += '<img src="https://apps.ecmwf.int/wms/?token=public&request=GetLegend&layers=composition_europe_pm10_forecast_surface&format=image/png" alt="legend">'
 			return div;
     };
 
